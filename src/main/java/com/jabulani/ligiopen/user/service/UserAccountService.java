@@ -10,5 +10,6 @@ public interface UserAccountService {
     UserAccountDto changeUserPassword(PasswordChangeDto passwordChangeDto);
     UserAccountDto getUserAccountById(Integer userId);
     UserAccountDto getUserAccountByEmail(String email);
+    Boolean existsByEmail(String email);
     List<UserAccountDto> getAllUsers();
 }

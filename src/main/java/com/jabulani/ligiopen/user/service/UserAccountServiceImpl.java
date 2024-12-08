@@ -71,6 +71,11 @@ public class UserAccountServiceImpl implements UserAccountService{
     }
 
     @Override
+    public Boolean existsByEmail(String email) {
+        return userAccountDao.existsByEmail(email);
+    }
+
+    @Override
     public List<UserAccountDto> getAllUsers() {
         return userAccountDao.getAllUsers().stream().map(userAccountMapper::toUserDto).collect(Collectors.toList());
     }

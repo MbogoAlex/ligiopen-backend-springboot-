@@ -7,5 +7,6 @@ public interface UserAccountDao {
     UserAccount updateUserAccount(UserAccount userAccount);
     UserAccount getUserAccountById(Integer userId);
     UserAccount getUserAccountByEmail(String email);
+    Boolean existsByEmail(String email);
     List<UserAccount> getAllUsers();
 }

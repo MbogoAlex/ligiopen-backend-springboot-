@@ -41,6 +41,14 @@ public class UserAccountDaoImpl implements UserAccountDao{
         return query.getSingleResult();
     }
 
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where email = :email", UserAccount.class);
+        query.setParameter("email", email);
+        return !query.getResultList().isEmpty();
+    }
+
     @Override
     public List<UserAccount> getAllUsers() {
         TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount", UserAccount.class);
