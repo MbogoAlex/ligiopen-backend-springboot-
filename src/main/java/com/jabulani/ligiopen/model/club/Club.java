@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,9 +25,25 @@ public class Club {
 
     private String description;
 
+    private String country;
+
+    private String county;
+
+    private String town;
+
+    private LocalDateTime createdAt;
+
+    private Boolean archived;
+
+    private LocalDateTime archivedAt;
+
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<PlayerClub> playerClubs;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<File> files;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "club_logo_id")
+    private File clubLogo;
 }

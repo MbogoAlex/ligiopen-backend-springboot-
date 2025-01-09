@@ -28,4 +28,7 @@ public class File {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "player_id")
     private Player player;
+
+    @OneToOne(mappedBy = "clubLogo", cascade = CascadeType.ALL)
+    private Club clubAsLogo;
 }

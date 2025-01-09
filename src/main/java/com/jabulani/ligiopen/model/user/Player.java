@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.model.user;
 
 import com.jabulani.ligiopen.model.aws.File;
+import com.jabulani.ligiopen.model.club.Club;
 import com.jabulani.ligiopen.model.club.PlayerClub;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,20 @@ public class Player {
 
     private Integer number;
 
-    private String position;
+    @Enumerated(EnumType.STRING)
+    private PlayerPosition playerPosition;
+
+    private Integer age;
+
+    private Double height;
+
+    private Double weight;
+
+    private String country;
+
+    private String county;
+
+    private String town;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<PlayerClub> playerClubs;
