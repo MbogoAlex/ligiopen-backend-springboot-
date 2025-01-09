@@ -1,14 +1,13 @@
 package com.jabulani.ligiopen.service.user;
 
 import com.jabulani.ligiopen.dao.user.UserAccountDao;
+import com.jabulani.ligiopen.model.user.Role;
+import com.jabulani.ligiopen.model.user.UserAccount;
 import com.jabulani.ligiopen.model.user.dto.PasswordChangeDto;
 import com.jabulani.ligiopen.model.user.dto.RegisterUserDto;
 import com.jabulani.ligiopen.model.user.dto.UpdateUserDto;
 import com.jabulani.ligiopen.model.user.dto.UserAccountDto;
-import com.jabulani.ligiopen.user.dto.*;
 import com.jabulani.ligiopen.model.user.dto.mapper.UserAccountMapper;
-import com.jabulani.ligiopen.model.user.Role;
-import com.jabulani.ligiopen.model.user.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

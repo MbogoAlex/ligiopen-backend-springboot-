@@ -4,7 +4,6 @@ import com.jabulani.ligiopen.model.user.dto.PasswordChangeDto;
 import com.jabulani.ligiopen.model.user.dto.RegisterUserDto;
 import com.jabulani.ligiopen.model.user.dto.UpdateUserDto;
 import com.jabulani.ligiopen.model.user.dto.UserAccountDto;
-import com.jabulani.ligiopen.user.dto.*;
 
 import java.util.List;
 
