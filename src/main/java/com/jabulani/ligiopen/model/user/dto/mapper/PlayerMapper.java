@@ -4,9 +4,10 @@ import com.jabulani.ligiopen.model.aws.File;
 import com.jabulani.ligiopen.model.club.PlayerClub;
 import com.jabulani.ligiopen.model.user.Player;
 import com.jabulani.ligiopen.model.user.dto.PlayerDto;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
-
+@Component
 public class PlayerMapper {
     public PlayerDto playerDto(Player player) {
 
