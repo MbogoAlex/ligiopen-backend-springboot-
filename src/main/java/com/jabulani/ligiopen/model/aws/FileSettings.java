@@ -1,4 +1,4 @@
-package com.jabulani.ligiopen.model.file;
+package com.jabulani.ligiopen.model.aws;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

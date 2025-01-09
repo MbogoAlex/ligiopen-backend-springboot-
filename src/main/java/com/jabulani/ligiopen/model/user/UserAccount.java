@@ -24,4 +24,7 @@ public class UserAccount {
     private LocalDateTime createdAt;
     private Boolean archived;
     private LocalDateTime archivedAt;
+
+    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private Player player;
 }
