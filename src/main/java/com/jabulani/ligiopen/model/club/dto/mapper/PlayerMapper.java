@@ -32,6 +32,7 @@ public class PlayerMapper {
 
         return PlayerDto.builder()
                 .playerId(player.getId())
+                .mainPhoto(awsService.getFileUrl(BUCKET_NAME, player.getMainPhoto().getName()))
                 .username(player.getUsername())
                 .number(player.getNumber())
                 .playerPosition(player.getPlayerPosition())

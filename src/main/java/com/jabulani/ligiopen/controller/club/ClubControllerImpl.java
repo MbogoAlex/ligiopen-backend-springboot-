@@ -28,7 +28,7 @@ public class ClubControllerImpl implements ClubController{
     @PostMapping("club")
     @Override
     public ResponseEntity<Response> addClub(
-            @RequestPart AddClubDto addClubDto,
+            @RequestPart("data") AddClubDto addClubDto,
             @RequestPart("file") MultipartFile logo
     ) throws IOException {
         return buildResponse.createResponse("club", clubService.addClub(addClubDto, logo), "Club added", HttpStatus.CREATED);
@@ -71,7 +71,7 @@ public class ClubControllerImpl implements ClubController{
     @PostMapping("player")
     @Override
     public ResponseEntity<Response> addPlayer(
-            @RequestPart AddPlayerDto addPlayerDto,
+            @RequestPart("data") AddPlayerDto addPlayerDto,
             @RequestPart("file") MultipartFile mainPhoto
     ) throws IOException {
         return buildResponse.createResponse("player", clubService.addPlayer(addPlayerDto, mainPhoto), "Player added", HttpStatus.OK);

@@ -41,7 +41,7 @@ public class ClubMapper {
 
         return ClubDetailsDto.builder()
                 .clubId(club.getId())
-                .clubLogo(club.getClubLogo().getName())
+                .clubLogo(awsService.getFileUrl(BUCKET_NAME, club.getClubLogo().getName()))
                 .name(club.getName())
                 .description(club.getDescription())
                 .startedOn(club.getStartedOn())

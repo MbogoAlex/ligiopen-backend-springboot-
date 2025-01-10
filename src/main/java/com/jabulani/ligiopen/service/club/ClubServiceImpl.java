@@ -158,6 +158,7 @@ public class ClubServiceImpl implements ClubService{
 
         Player player = Player.builder()
                 .username(addPlayerDto.getUsername())
+                .mainPhoto(file)
                 .number(addPlayerDto.getNumber())
                 .playerPosition(addPlayerDto.getPlayerPosition())
                 .age(addPlayerDto.getAge())
@@ -167,6 +168,7 @@ public class ClubServiceImpl implements ClubService{
                 .county(addPlayerDto.getCounty())
                 .town(addPlayerDto.getTown())
                 .playerClubs(new ArrayList<>())
+                .files(new ArrayList<>())
                 .build();
 
         file.setPlayer(player);

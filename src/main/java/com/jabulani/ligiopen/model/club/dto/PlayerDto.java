@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 public class PlayerDto {
     private Integer playerId;
+    private String mainPhoto;
     private String username;
     private Integer number;
     private PlayerPosition playerPosition;
