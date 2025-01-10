@@ -2,7 +2,7 @@ package com.jabulani.ligiopen.config.security;
 
 import com.jabulani.ligiopen.dao.user.UserAccountDao;
 import com.jabulani.ligiopen.model.user.Role;
-import com.jabulani.ligiopen.model.user.UserAccount;
+import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

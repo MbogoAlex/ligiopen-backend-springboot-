@@ -1,6 +1,6 @@
 package com.jabulani.ligiopen.dao.user;
 
-import com.jabulani.ligiopen.model.user.UserAccount;
+import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import java.util.List;
 public interface UserAccountDao {
     UserAccount createUserAccount(UserAccount userAccount);

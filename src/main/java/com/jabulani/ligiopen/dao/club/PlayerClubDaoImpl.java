@@ -1,6 +1,6 @@
 package com.jabulani.ligiopen.dao.club;
 
-import com.jabulani.ligiopen.model.club.PlayerClub;
+import com.jabulani.ligiopen.model.club.entity.PlayerClub;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;

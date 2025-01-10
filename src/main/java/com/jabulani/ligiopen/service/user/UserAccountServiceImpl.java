@@ -2,7 +2,7 @@ package com.jabulani.ligiopen.service.user;
 
 import com.jabulani.ligiopen.dao.user.UserAccountDao;
 import com.jabulani.ligiopen.model.user.Role;
-import com.jabulani.ligiopen.model.user.UserAccount;
+import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import com.jabulani.ligiopen.model.user.dto.PasswordChangeDto;
 import com.jabulani.ligiopen.model.user.dto.RegisterUserDto;
 import com.jabulani.ligiopen.model.user.dto.UpdateUserDto;

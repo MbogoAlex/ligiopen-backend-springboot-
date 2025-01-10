@@ -26,7 +26,7 @@ public class AwsServiceImplementation implements AwsService {
     @Override
     public String uploadFile(String bucketName, MultipartFile file) throws AmazonClientException, IOException {
         ObjectMetadata metadata = new ObjectMetadata();
-        String fileName = LocalDateTime.now() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = System.currentTimeMillis() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
         String contentType = file.getContentType();
         long fileSize = file.getSize();
         InputStream inputStream = file.getInputStream();
@@ -56,7 +56,7 @@ public class AwsServiceImplementation implements AwsService {
         ObjectMetadata metadata = new ObjectMetadata();
 
         for(MultipartFile file : files) {
-            String fileName = LocalDateTime.now() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
+            String fileName = System.currentTimeMillis() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
             String contentType = file.getContentType();
             long fileSize = file.getSize();
             InputStream inputStream = file.getInputStream();

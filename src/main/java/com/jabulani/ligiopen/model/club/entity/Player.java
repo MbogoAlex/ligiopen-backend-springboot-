@@ -1,7 +1,8 @@
-package com.jabulani.ligiopen.model.club;
+package com.jabulani.ligiopen.model.club.entity;
 
 import com.jabulani.ligiopen.model.aws.File;
-import com.jabulani.ligiopen.model.user.UserAccount;
+import com.jabulani.ligiopen.model.club.PlayerPosition;
+import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,10 @@ public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "main_photo_id")
+    private File mainPhoto;
 
     private String username;
 
@@ -43,9 +48,9 @@ public class Player {
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<PlayerClub> playerClubs;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private UserAccount userAccount;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    private UserAccount userAccount;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<File> files;

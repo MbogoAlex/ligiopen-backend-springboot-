@@ -1,7 +1,7 @@
 package com.jabulani.ligiopen.model.aws;
 
-import com.jabulani.ligiopen.model.club.Club;
-import com.jabulani.ligiopen.model.club.Player;
+import com.jabulani.ligiopen.model.club.entity.Club;
+import com.jabulani.ligiopen.model.club.entity.Player;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,4 +31,7 @@ public class File {
 
     @OneToOne(mappedBy = "clubLogo", cascade = CascadeType.ALL)
     private Club clubAsLogo;
+
+    @OneToOne(mappedBy = "mainPhoto", cascade = CascadeType.ALL)
+    private Player playerAsMainPhoto;
 }

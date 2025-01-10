@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateClubDto {
+public class UnsignPlayerDto {
+    private Integer playerId;
     private Integer clubId;
-    private String name;
-    private String description;
-    private String country;
-    private String county;
-    private String town;
+
 }

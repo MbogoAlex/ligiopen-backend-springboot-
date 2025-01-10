@@ -1,4 +1,4 @@
-package com.jabulani.ligiopen.model.club;
+package com.jabulani.ligiopen.model.club.entity;
 
 import com.jabulani.ligiopen.model.aws.File;
 import jakarta.persistence.*;

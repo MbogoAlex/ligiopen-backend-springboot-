@@ -1,7 +1,7 @@
 package com.jabulani.ligiopen.model.user.dto.mapper;
 
 import com.jabulani.ligiopen.model.user.dto.UserAccountDto;
-import com.jabulani.ligiopen.model.user.UserAccount;
+import com.jabulani.ligiopen.model.user.entity.UserAccount;
 
 public class UserAccountMapper {
     public UserAccountDto toUserDto(UserAccount userAccount) {

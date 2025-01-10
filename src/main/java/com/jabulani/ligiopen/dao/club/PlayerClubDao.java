@@ -1,6 +1,6 @@
 package com.jabulani.ligiopen.dao.club;
 
-import com.jabulani.ligiopen.model.club.PlayerClub;
+import com.jabulani.ligiopen.model.club.entity.PlayerClub;
 
 import java.util.List;
 

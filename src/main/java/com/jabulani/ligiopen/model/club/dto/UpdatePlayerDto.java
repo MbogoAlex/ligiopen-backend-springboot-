@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddPlayerDto {
+public class UpdatePlayerDto {
+    private Integer playerId;
     private String username;
     private Integer age;
     private Double height;

@@ -1,6 +1,7 @@
-package com.jabulani.ligiopen.model.user;
+package com.jabulani.ligiopen.model.user.entity;
 
-import com.jabulani.ligiopen.model.club.Player;
+import com.jabulani.ligiopen.model.club.entity.Player;
+import com.jabulani.ligiopen.model.user.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,6 @@ public class UserAccount {
     private Boolean archived;
     private LocalDateTime archivedAt;
 
-    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
-    private Player player;
+//    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
+//    private Player player;
 }

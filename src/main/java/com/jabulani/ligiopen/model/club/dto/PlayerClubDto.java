@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateClubDto {
+public class PlayerClubDto {
+    private Integer id;
+    private Integer playerId;
     private Integer clubId;
-    private String name;
-    private String description;
-    private String country;
-    private String county;
-    private String town;
+    private LocalDateTime createdAt;
+    private Boolean archived;
+    private LocalDateTime archivedAt;
 }

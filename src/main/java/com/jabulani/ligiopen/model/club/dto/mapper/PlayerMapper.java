@@ -1,13 +1,23 @@
 package com.jabulani.ligiopen.model.club.dto.mapper;
 
 import com.jabulani.ligiopen.model.aws.File;
-import com.jabulani.ligiopen.model.club.Player;
+import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.club.dto.PlayerDto;
+import com.jabulani.ligiopen.service.aws.AwsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 @Component
 public class PlayerMapper {
+
+    private final String BUCKET_NAME = "ligiopen";
+
+    private final AwsService awsService;
+    @Autowired
+    public PlayerMapper(AwsService awsService) {
+        this.awsService = awsService;
+    }
     public PlayerDto playerDto(Player player) {
 
         Integer clubId = null;
@@ -32,7 +42,7 @@ public class PlayerMapper {
                 .county(player.getCounty())
                 .town(player.getTown())
                 .clubId(clubId)
-                .files(player.getFiles().stream().map(File::getName).collect(Collectors.toList()))
+                .files(player.getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).collect(Collectors.toList()))
                 .build();
     }
 }
