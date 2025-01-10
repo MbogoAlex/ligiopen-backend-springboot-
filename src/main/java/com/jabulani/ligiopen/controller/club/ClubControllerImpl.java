@@ -28,10 +28,10 @@ public class ClubControllerImpl implements ClubController{
     @PostMapping("club")
     @Override
     public ResponseEntity<Response> addClub(
-            @RequestPart ClubDetailsDto clubDetailsDto,
+            @RequestPart AddClubDto addClubDto,
             @RequestPart("file") MultipartFile logo
     ) throws IOException {
-        return buildResponse.createResponse("club", clubService.addClub(clubDetailsDto, logo), "Club added", HttpStatus.CREATED);
+        return buildResponse.createResponse("club", clubService.addClub(addClubDto, logo), "Club added", HttpStatus.CREATED);
     }
     @PutMapping("club/details")
     @Override

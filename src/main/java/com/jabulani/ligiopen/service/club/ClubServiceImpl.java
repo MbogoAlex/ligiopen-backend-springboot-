@@ -47,7 +47,7 @@ public class ClubServiceImpl implements ClubService{
     }
     @Transactional
     @Override
-    public ClubDetailsDto addClub(ClubDetailsDto clubDetailsDto, MultipartFile logo) throws IOException {
+    public ClubDetailsDto addClub(AddClubDto addClubDto, MultipartFile logo) throws IOException {
         String fileName = null;
 
         if(logo != null) {
@@ -56,12 +56,12 @@ public class ClubServiceImpl implements ClubService{
 
 
         Club club = Club.builder()
-                .name(clubDetailsDto.getName())
-                .description(clubDetailsDto.getDescription())
-                .country(clubDetailsDto.getCountry())
-                .county(clubDetailsDto.getCounty())
-                .town(clubDetailsDto.getTown())
-                .startedOn(clubDetailsDto.getStartedOn())
+                .name(addClubDto.getName())
+                .description(addClubDto.getDescription())
+                .country(addClubDto.getCountry())
+                .county(addClubDto.getCounty())
+                .town(addClubDto.getTown())
+                .startedOn(addClubDto.getStartedOn())
                 .createdAt(LocalDateTime.now())
                 .archived(false)
                 .playerClubs(new ArrayList<>())

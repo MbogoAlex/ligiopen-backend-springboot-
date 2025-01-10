@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface ClubController {
-    ResponseEntity<Response> addClub(ClubDetailsDto clubDetailsDto, MultipartFile logo) throws IOException;
+    ResponseEntity<Response> addClub(AddClubDto addClubDto, MultipartFile logo) throws IOException;
     ResponseEntity<Response> updateClubDetails(UpdateClubDto updateClubDto);
 
     ResponseEntity<Response> updateClubLogo(Integer clubId, MultipartFile logo) throws IOException;

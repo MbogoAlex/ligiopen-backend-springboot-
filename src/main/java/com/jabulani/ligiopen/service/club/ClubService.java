@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ClubService {
-    ClubDetailsDto addClub(ClubDetailsDto clubDetailsDto, MultipartFile logo) throws IOException;
+    ClubDetailsDto addClub(AddClubDto addClubDto, MultipartFile logo) throws IOException;
     ClubDetailsDto updateClubDetails(UpdateClubDto updateClubDto);
 
     ClubDetailsDto updateClubLogo(Integer clubId, MultipartFile logo) throws IOException;
