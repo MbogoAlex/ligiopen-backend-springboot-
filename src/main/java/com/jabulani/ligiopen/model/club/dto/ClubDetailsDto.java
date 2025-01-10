@@ -1,6 +1,5 @@
 package com.jabulani.ligiopen.model.club.dto;
 
-import com.jabulani.ligiopen.model.user.dto.PlayerDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.jabulani.ligiopen.model.user;
+package com.jabulani.ligiopen.model.club;
 
 public enum PlayerPosition {
     GOALKEEPER,

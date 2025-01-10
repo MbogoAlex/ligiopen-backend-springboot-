@@ -3,8 +3,7 @@ package com.jabulani.ligiopen.model.club.dto.mapper;
 import com.jabulani.ligiopen.model.aws.File;
 import com.jabulani.ligiopen.model.club.Club;
 import com.jabulani.ligiopen.model.club.dto.ClubDetailsDto;
-import com.jabulani.ligiopen.model.user.dto.PlayerDto;
-import com.jabulani.ligiopen.model.user.dto.mapper.PlayerMapper;
+import com.jabulani.ligiopen.model.club.dto.PlayerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

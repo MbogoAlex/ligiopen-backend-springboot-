@@ -1,6 +1,6 @@
-package com.jabulani.ligiopen.model.user.dto;
+package com.jabulani.ligiopen.model.club.dto;
 
-import com.jabulani.ligiopen.model.user.PlayerPosition;
+import com.jabulani.ligiopen.model.club.PlayerPosition;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

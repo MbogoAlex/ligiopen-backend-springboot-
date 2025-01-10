@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.model.user;
 
+import com.jabulani.ligiopen.model.club.Player;
 import jakarta.persistence.*;
 import lombok.*;
 

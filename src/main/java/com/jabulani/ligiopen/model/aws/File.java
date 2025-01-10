@@ -1,7 +1,7 @@
 package com.jabulani.ligiopen.model.aws;
 
 import com.jabulani.ligiopen.model.club.Club;
-import com.jabulani.ligiopen.model.user.Player;
+import com.jabulani.ligiopen.model.club.Player;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

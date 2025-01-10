@@ -1,9 +1,8 @@
-package com.jabulani.ligiopen.model.user.dto.mapper;
+package com.jabulani.ligiopen.model.club.dto.mapper;
 
 import com.jabulani.ligiopen.model.aws.File;
-import com.jabulani.ligiopen.model.club.PlayerClub;
-import com.jabulani.ligiopen.model.user.Player;
-import com.jabulani.ligiopen.model.user.dto.PlayerDto;
+import com.jabulani.ligiopen.model.club.Player;
+import com.jabulani.ligiopen.model.club.dto.PlayerDto;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
