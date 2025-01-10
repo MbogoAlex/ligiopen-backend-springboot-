@@ -2,7 +2,9 @@ package com.jabulani.ligiopen.config.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BuildResponse {
     public ResponseEntity<Response> createResponse(String desc, Object data, String message, HttpStatus status) {
         return ResponseEntity.status(status)
