@@ -32,6 +32,9 @@ public class File {
     @OneToOne(mappedBy = "clubLogo", cascade = CascadeType.ALL)
     private Club clubAsLogo;
 
+    @OneToOne(mappedBy = "clubMainPhoto", cascade = CascadeType.ALL)
+    private Club clubAsMainPhoto;
+
     @OneToOne(mappedBy = "mainPhoto", cascade = CascadeType.ALL)
     private Player playerAsMainPhoto;
 }

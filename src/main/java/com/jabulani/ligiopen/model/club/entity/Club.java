@@ -22,6 +22,7 @@ public class Club {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     private String name;
 
     private String description;
@@ -49,4 +50,8 @@ public class Club {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "club_logo_id")
     private File clubLogo;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "club_main_photo_id")
+    private File clubMainPhoto;
 }

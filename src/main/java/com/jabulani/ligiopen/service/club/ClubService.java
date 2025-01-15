@@ -12,6 +12,8 @@ public interface ClubService {
 
     ClubDetailsDto updateClubLogo(Integer clubId, MultipartFile logo) throws IOException;
 
+    ClubDetailsDto setClubMainPhoto(Integer clubId, MultipartFile photo) throws IOException;
+
     ClubDetailsDto uploadClubFiles(Integer clubId, MultipartFile[] files) throws IOException;
     ClubDetailsDto getClubById(Integer id);
     List<ClubDetailsDto> getClubs();

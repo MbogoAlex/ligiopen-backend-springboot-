@@ -66,6 +66,7 @@ public class ClubServiceImpl implements ClubService{
                 .archived(false)
                 .playerClubs(new ArrayList<>())
                 .files(new ArrayList<>())
+                .clubMainPhoto(null)
                 .build();
 
         File file = File.builder()
@@ -112,11 +113,49 @@ public class ClubServiceImpl implements ClubService{
         File clubLogo = club.getClubLogo();
 
         if(logo != null) {
+
+            if(club.getClubLogo() != null) {
+                awsService.deleteFile(BUCKET_NAME, clubLogo.getName());
+            }
+
             clubLogo.setName(awsService.uploadFile(BUCKET_NAME, logo));
         }
 
         return clubMapper.clubDetailsDto(clubDao.updateClub(club));
     }
+    @Transactional
+    @Override
+    public ClubDetailsDto setClubMainPhoto(Integer clubId, MultipartFile photo) throws IOException {
+
+        String fileName = null;
+
+        if(photo != null) {
+            fileName = awsService.uploadFile(BUCKET_NAME, photo);
+        }
+
+
+        Club club = clubDao.getClubById(clubId);
+
+        if(club.getClubMainPhoto() == null) {
+            File file = File.builder()
+                    .name(fileName)
+                    .clubAsMainPhoto(club)
+                    .build();
+
+            club.setClubMainPhoto(file);
+        } else {
+
+            File file = club.getClubMainPhoto();
+
+            awsService.deleteFile(BUCKET_NAME, file.getName());
+
+            file.setName(fileName);
+        }
+
+
+        return clubMapper.clubDetailsDto(clubDao.updateClub(club));
+    }
+
     @Transactional
     @Override
     public ClubDetailsDto uploadClubFiles(Integer clubId, MultipartFile[] files) throws IOException {

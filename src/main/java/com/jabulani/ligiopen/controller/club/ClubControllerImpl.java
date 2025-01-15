@@ -48,6 +48,15 @@ public class ClubControllerImpl implements ClubController{
     ) throws IOException {
         return buildResponse.createResponse("club", clubService.updateClubLogo(clubId, logo), "Club logo updated", HttpStatus.OK);
     }
+    @PutMapping("club/main-photo/{clubId}")
+    @Override
+    public ResponseEntity<Response> setClubMainPhoto(
+            @PathVariable("clubId") Integer clubId,
+            @RequestPart("file") MultipartFile photo
+    ) throws IOException {
+        return null;
+    }
+
     @PutMapping("club/file-upload/{clubId}")
     @Override
     public ResponseEntity<Response> uploadClubFiles(

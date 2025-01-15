@@ -13,6 +13,8 @@ public interface ClubController {
 
     ResponseEntity<Response> updateClubLogo(Integer clubId, MultipartFile logo) throws IOException;
 
+    ResponseEntity<Response> setClubMainPhoto(Integer clubId, MultipartFile photo) throws IOException;
+
     ResponseEntity<Response> uploadClubFiles(Integer clubId, MultipartFile[] files) throws IOException;
     ResponseEntity<Response> getClubById(Integer id);
     ResponseEntity<Response> getClubs();
