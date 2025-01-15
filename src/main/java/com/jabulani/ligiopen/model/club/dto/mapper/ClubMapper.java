@@ -30,6 +30,12 @@ public class ClubMapper {
 
     public ClubDetailsDto clubDetailsDto(Club club) {
 
+        String clubMainPhoto = null;
+
+        if(club.getClubMainPhoto() != null) {
+            clubMainPhoto = club.getClubMainPhoto().getName();
+        }
+
         List<PlayerDto> players = new ArrayList<>();
 
         if(club.getPlayerClubs() != null) {
@@ -42,6 +48,7 @@ public class ClubMapper {
         return ClubDetailsDto.builder()
                 .clubId(club.getId())
                 .clubLogo(awsService.getFileUrl(BUCKET_NAME, club.getClubLogo().getName()))
+                .clubMainPhoto(clubMainPhoto)
                 .name(club.getName())
                 .description(club.getDescription())
                 .startedOn(club.getStartedOn())

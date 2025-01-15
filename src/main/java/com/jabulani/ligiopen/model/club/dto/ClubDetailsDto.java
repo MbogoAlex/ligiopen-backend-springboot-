@@ -16,6 +16,7 @@ import java.util.List;
 public class ClubDetailsDto {
     private Integer clubId;
     private String clubLogo;
+    private String clubMainPhoto;
     private String name;
     private String description;
     private String country;
