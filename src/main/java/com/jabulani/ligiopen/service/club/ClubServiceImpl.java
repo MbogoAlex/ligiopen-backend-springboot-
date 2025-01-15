@@ -216,6 +216,12 @@ public class ClubServiceImpl implements ClubService{
 
         return playerMapper.playerDto(playerDao.addPlayer(player));
     }
+
+    @Override
+    public PlayerDto getPlayerById(Integer playerId) {
+        return playerMapper.playerDto(playerDao.getPlayerById(playerId));
+    }
+
     @Transactional
     @Override
     public PlayerDto signPlayer(SignPlayerDto signPlayerDto) {
@@ -244,7 +250,7 @@ public class ClubServiceImpl implements ClubService{
 
         clubDao.updateClub(newClub);
 
-        player.getPlayerClubs().add(playerClub);
+//        player.getPlayerClubs().add(playerClub);
 
 
         return playerMapper.playerDto(playerDao.updatePlayer(player));

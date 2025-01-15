@@ -54,7 +54,7 @@ public class ClubControllerImpl implements ClubController{
             @PathVariable("clubId") Integer clubId,
             @RequestPart("file") MultipartFile photo
     ) throws IOException {
-        return null;
+        return buildResponse.createResponse("club", clubService.setClubMainPhoto(clubId, photo), "Club photo set", HttpStatus.OK);
     }
 
     @PutMapping("club/file-upload/{clubId}")
@@ -85,6 +85,12 @@ public class ClubControllerImpl implements ClubController{
     ) throws IOException {
         return buildResponse.createResponse("player", clubService.addPlayer(addPlayerDto, mainPhoto), "Player added", HttpStatus.OK);
     }
+    @GetMapping("player/{id}")
+    @Override
+    public ResponseEntity<Response> getPlayerById(@PathVariable("id") Integer playerId) {
+        return buildResponse.createResponse("player", clubService.getPlayerById(playerId), "Player fetched", HttpStatus.OK);
+    }
+
     @PutMapping("player/sign")
     @Override
     public ResponseEntity<Response> signPlayer(

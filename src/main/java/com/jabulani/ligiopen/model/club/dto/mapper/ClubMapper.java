@@ -33,7 +33,7 @@ public class ClubMapper {
         String clubMainPhoto = null;
 
         if(club.getClubMainPhoto() != null) {
-            clubMainPhoto = club.getClubMainPhoto().getName();
+            clubMainPhoto = awsService.getFileUrl(BUCKET_NAME, club.getClubMainPhoto().getName());
         }
 
         List<PlayerDto> players = new ArrayList<>();

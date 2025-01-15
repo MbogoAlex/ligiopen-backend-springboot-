@@ -20,6 +20,7 @@ public interface ClubController {
     ResponseEntity<Response> getClubs();
 
     ResponseEntity<Response> addPlayer(AddPlayerDto addPlayerDto, MultipartFile mainPhoto) throws IOException;
+    ResponseEntity<Response> getPlayerById(Integer playerId);
 
     ResponseEntity<Response> signPlayer(SignPlayerDto signPlayerDto);
 

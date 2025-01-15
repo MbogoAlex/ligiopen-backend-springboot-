@@ -20,6 +20,8 @@ public interface ClubService {
 
     PlayerDto addPlayer(AddPlayerDto addPlayerDto, MultipartFile mainPhoto) throws IOException;
 
+    PlayerDto getPlayerById(Integer playerId);
+
     PlayerDto signPlayer(SignPlayerDto signPlayerDto);
 
     PlayerDto removePlayerFromTeam(UnsignPlayerDto unsignPlayerDto);
