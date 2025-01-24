@@ -2,6 +2,9 @@ package com.jabulani.ligiopen.model.aws;
 
 import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.club.entity.Player;
+import com.jabulani.ligiopen.model.match.entity.MatchCommentary;
+import com.jabulani.ligiopen.model.match.entity.MatchLocation;
+import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,4 +40,12 @@ public class File {
 
     @OneToOne(mappedBy = "mainPhoto", cascade = CascadeType.ALL)
     private Player playerAsMainPhoto;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "match_location_id")
+    private MatchLocation matchLocation;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "match_commentary_id")
+    private MatchCommentary matchCommentary;
 }

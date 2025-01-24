@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.model.club.entity;
 
 import com.jabulani.ligiopen.model.aws.File;
+import com.jabulani.ligiopen.model.match.entity.MatchFixture;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,4 +55,10 @@ public class Club {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "club_main_photo_id")
     private File clubMainPhoto;
+
+    @OneToMany(mappedBy = "homeClub", cascade = CascadeType.ALL)
+    private List<MatchFixture> homeFixtures;
+
+    @OneToMany(mappedBy = "awayClub", cascade = CascadeType.ALL)
+    private List<MatchFixture> awayFixtures;
 }
