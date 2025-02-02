@@ -19,7 +19,4 @@ public class SubstitutionEvent extends MatchEvent {
     @JoinColumn(name = "subbed_out_player_id", nullable = false)
     private Player subbedOutPlayer;
 
-    @ManyToOne
-    @JoinColumn(name = "subbed_in_player_id", nullable = false)
-    private Player subbedInPlayer;
 }
