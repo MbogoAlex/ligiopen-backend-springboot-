@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
-//@Builder
-public class SubstitutionEventDto extends MatchEventDto {
-    private MatchEventDto matchEventDto;
-    private Integer subbedOutPlayerId;
+public class FullTimeEventDto extends MatchEventDto{
 }
