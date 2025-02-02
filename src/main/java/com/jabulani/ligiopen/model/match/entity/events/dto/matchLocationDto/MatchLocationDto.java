@@ -15,9 +15,7 @@ import java.util.List;
 public class MatchLocationDto {
     private Integer locationId;
     private String country;
-
     private String county;
-
     private String town;
     private List<String> photos;
     private List<MatchFixtureDto> matchFixtures;
