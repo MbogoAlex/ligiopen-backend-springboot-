@@ -197,4 +197,20 @@ public class MatchEventsDtoMapper {
                 .files(files)
                 .build();
     }
+
+    public OwnGoalEventDto ownGoalEventDto(OwnGoalEvent ownGoalEvent) {
+        List<String> files = new ArrayList<>();
+        if(!ownGoalEvent.getMatchCommentary().getFiles().isEmpty()) {
+            files.addAll(ownGoalEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        }
+
+        return (OwnGoalEventDto) OwnGoalEventDto.builder()
+                .title(ownGoalEvent.getTitle())
+                .summary(ownGoalEvent.getSummary())
+                .minute(ownGoalEvent.getMinute())
+                .matchEventType(ownGoalEvent.getMatchEventType())
+                .mainPlayerId(ownGoalEvent.getPlayer().getId())
+                .files(files)
+                .build();
+    }
 }
