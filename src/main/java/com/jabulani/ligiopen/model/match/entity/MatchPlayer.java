@@ -34,8 +34,4 @@ public class MatchPlayer {
 
     @Column(name = "is_home_team", nullable = false) // Indicates if the player is on the home team
     private boolean isHomeTeam;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "player_state", nullable = false)
-    private PlayerState playerState;
 }

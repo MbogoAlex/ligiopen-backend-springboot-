@@ -6,11 +6,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
+@SuperBuilder
 //@Builder
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "foul_event")

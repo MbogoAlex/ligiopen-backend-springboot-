@@ -1,7 +1,6 @@
-package com.jabulani.ligiopen.model.match.entity.events.dto;
+package com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 //@Builder
 public class GoalEventDto extends MatchEventDto {
-    private MatchEventDto matchEventDto;
     private Integer assistingPlayerId;
 }

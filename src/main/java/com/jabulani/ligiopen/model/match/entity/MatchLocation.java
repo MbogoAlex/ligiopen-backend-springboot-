@@ -29,7 +29,6 @@ public class MatchLocation {
     @OneToMany(mappedBy = "matchLocation", cascade = CascadeType.ALL)
     private List<File> locationPhotos;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "match_fixture_id")
-    private MatchFixture matchFixture;
+    @OneToMany(mappedBy = "matchLocation")
+    private List<MatchFixture> matchFixtures;
 }

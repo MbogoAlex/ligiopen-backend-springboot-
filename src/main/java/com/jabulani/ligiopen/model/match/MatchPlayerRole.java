@@ -5,5 +5,4 @@ public enum MatchPlayerRole {
     DEFENDER,
     MIDFIELDER,
     FORWARD,
-    BENCH
 }

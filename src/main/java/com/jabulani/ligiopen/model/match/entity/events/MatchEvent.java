@@ -2,18 +2,20 @@ package com.jabulani.ligiopen.model.match.entity.events;
 
 import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.match.MatchEventType;
+import com.jabulani.ligiopen.model.match.entity.MatchCommentary;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Use JOINED or SINGLE_TABLE strategy
 @Table(name = "match_event")
@@ -38,4 +40,7 @@ public class MatchEvent {
 
     @Enumerated(EnumType.STRING)
     private MatchEventType matchEventType;
+
+    @OneToOne(mappedBy = "matchEvent", cascade = CascadeType.ALL)
+    private MatchCommentary matchCommentary;
 }

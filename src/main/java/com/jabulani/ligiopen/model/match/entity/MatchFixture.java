@@ -22,7 +22,9 @@ public class MatchFixture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(mappedBy = "matchFixture", cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "match_location_id")
     private MatchLocation matchLocation;
 
     @OneToOne(mappedBy = "matchFixture", cascade = CascadeType.ALL)

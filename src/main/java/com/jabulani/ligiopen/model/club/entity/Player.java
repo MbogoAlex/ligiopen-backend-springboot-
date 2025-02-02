@@ -2,6 +2,7 @@ package com.jabulani.ligiopen.model.club.entity;
 
 import com.jabulani.ligiopen.model.aws.File;
 import com.jabulani.ligiopen.model.club.PlayerPosition;
+import com.jabulani.ligiopen.model.match.PlayerState;
 import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -54,4 +55,8 @@ public class Player {
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<File> files;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "player_state", nullable = false)
+    private PlayerState playerState;
 }
