@@ -1,4 +1,4 @@
-package com.jabulani.ligiopen.model.match.entity.events.dto;
+package com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto;
 
 import com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto.MatchEventDto;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class MatchCommentaryCreationDto {
     private Integer postMatchAnalysisId;
     private String minute;
-    private MatchEventDto matchEventDto;
-
+    private MatchEventDto matchEvent;
 }
