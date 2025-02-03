@@ -1,7 +1,6 @@
 package com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper;
 
 import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
-import com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto.mapper.MatchEventsDtoMapper;
 import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.PostMatchAnalysisDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
