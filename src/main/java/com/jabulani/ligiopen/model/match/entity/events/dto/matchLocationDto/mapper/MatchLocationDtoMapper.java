@@ -34,7 +34,9 @@ public class MatchLocationDtoMapper {
         }
         return MatchLocationDto.builder()
                 .locationId(matchLocation.getId())
+                .venueName(matchLocation.getVenueName())
                 .country(matchLocation.getCountry())
+                .county(matchLocation.getCounty())
                 .town(matchLocation.getTown())
                 .photos(files)
                 .matchFixtures(matchLocation.getMatchFixtures().stream().map(matchFixtureDtoMapper::matchFixtureDto).collect(Collectors.toList()))

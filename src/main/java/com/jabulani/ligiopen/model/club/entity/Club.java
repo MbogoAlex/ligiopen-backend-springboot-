@@ -42,23 +42,23 @@ public class Club {
 
     private LocalDateTime archivedAt;
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlayerClub> playerClubs;
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<File> files;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "club_logo_id")
     private File clubLogo;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "club_main_photo_id")
     private File clubMainPhoto;
 
-    @OneToMany(mappedBy = "homeClub", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "homeClub", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MatchFixture> homeFixtures;
 
-    @OneToMany(mappedBy = "awayClub", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "awayClub", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MatchFixture> awayFixtures;
 }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MatchLocationUpdateDto {
     private Integer locationId;
+    private String venueName;
     private String country;
     private String county;
     private String town;

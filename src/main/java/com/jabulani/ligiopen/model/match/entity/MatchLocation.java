@@ -20,6 +20,8 @@ public class MatchLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String venueName;
+
     private String country;
 
     private String county;

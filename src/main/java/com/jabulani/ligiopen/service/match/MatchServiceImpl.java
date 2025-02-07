@@ -73,10 +73,12 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public MatchLocationDto createMatchLocation(MatchLocationCreationDto matchLocationCreationDto) {
         MatchLocation matchLocation = MatchLocation.builder()
+                .venueName(matchLocationCreationDto.getVenueName())
                 .country(matchLocationCreationDto.getCountry())
                 .county(matchLocationCreationDto.getCounty())
                 .town(matchLocationCreationDto.getTown())
                 .locationPhotos(new ArrayList<>())
+                .matchFixtures(new ArrayList<>())
                 .build();
 
         return matchLocationDtoMapper.matchLocationDto(matchDao.createMatchLocation(matchLocation));
@@ -85,6 +87,11 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public MatchLocationDto updateMatchLocation(MatchLocationUpdateDto matchLocationUpdateDto) {
         MatchLocation matchLocation = matchDao.getMatchLocationById(matchLocationUpdateDto.getLocationId());
+
+        if(!matchLocationUpdateDto.getVenueName().equals(matchLocation.getVenueName())) {
+            matchLocation.setVenueName(matchLocationUpdateDto.getVenueName());
+        }
+
         if(!matchLocationUpdateDto.getCountry().equals(matchLocation.getCountry())) {
             matchLocation.setCountry(matchLocationUpdateDto.getCountry());
         }
@@ -123,6 +130,7 @@ public class MatchServiceImpl implements MatchService{
         MatchLocation matchLocation = matchDao.getMatchLocationById(locationId);
         File file = fileDao.getFileById(fileId);
         awsService.deleteFile(BUCKET_NAME, file.getName());
+        fileDao.deleteFile(fileId);
 
         return matchLocationDtoMapper.matchLocationDto(matchDao.updateMatchLocation(matchLocation));
     }
@@ -153,6 +161,12 @@ public class MatchServiceImpl implements MatchService{
                 .status(MatchStatus.PENDING)
                 .matchStatistics(new ArrayList<>())
                 .build();
+
+        PostMatchAnalysis postMatchAnalysis = PostMatchAnalysis.builder()
+                .matchFixture(matchFixture)
+                .build();
+
+        matchFixture.setPostMatchAnalysis(postMatchAnalysis);
 
         return matchFixtureDtoMapper.matchFixtureDto(matchDao.createMatchFixture(matchFixture));
     }
@@ -225,7 +239,12 @@ public class MatchServiceImpl implements MatchService{
 //        }
 
         PostMatchAnalysis postMatchAnalysis = matchDao.getPostMatchAnalysisById(matchCommentaryCreationDto.getPostMatchAnalysisId());
-        Player player = playerDao.getPlayerById(matchCommentaryCreationDto.getMatchEvent().getMainPlayerId());
+
+        Player player = null;
+
+        if(matchCommentaryCreationDto.getMatchEvent().getMainPlayerId() != null) {
+            player = playerDao.getPlayerById(matchCommentaryCreationDto.getMatchEvent().getMainPlayerId());
+        }
 
         MatchEvent matchEvent = MatchEvent.builder()
                 .title(matchCommentaryCreationDto.getMatchEvent().getTitle())

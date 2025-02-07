@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 public class MatchLocationDto {
     private Integer locationId;
+    private String venueName;
     private String country;
     private String county;
     private String town;

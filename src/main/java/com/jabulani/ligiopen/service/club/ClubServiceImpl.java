@@ -9,6 +9,7 @@ import com.jabulani.ligiopen.model.club.dto.mapper.PlayerMapper;
 import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.club.entity.PlayerClub;
+import com.jabulani.ligiopen.model.match.PlayerState;
 import com.jabulani.ligiopen.service.aws.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -185,6 +186,7 @@ public class ClubServiceImpl implements ClubService{
     @Override
     public PlayerDto addPlayer(AddPlayerDto addPlayerDto, MultipartFile mainPhoto) throws IOException {
 
+
         String mainPic = null;
 
         if(mainPhoto != null) {
@@ -200,6 +202,7 @@ public class ClubServiceImpl implements ClubService{
                 .mainPhoto(file)
                 .number(addPlayerDto.getNumber())
                 .playerPosition(addPlayerDto.getPlayerPosition())
+                .playerState(PlayerState.ACTIVE)
                 .age(addPlayerDto.getAge())
                 .height(addPlayerDto.getHeight())
                 .weight(addPlayerDto.getWeight())
@@ -228,6 +231,12 @@ public class ClubServiceImpl implements ClubService{
         Player player = playerDao.getPlayerById(signPlayerDto.getPlayerId());
 
         Club newClub = clubDao.getClubById(signPlayerDto.getNewClubId());
+
+        List<PlayerClub> activePlayers = newClub.getPlayerClubs().stream().filter(playerClub -> playerClub.getPlayer().getPlayerState().equals(PlayerState.ACTIVE)).toList();
+
+        if(activePlayers.size() > 10) {
+            player.setPlayerState(PlayerState.BENCH);
+        }
 
         PlayerClub oldPlayerClub = player.getPlayerClubs().stream()
                 .filter(playerClub1 -> playerClub1.getPlayer().getId().equals(player.getId()) && !playerClub1.getArchived())

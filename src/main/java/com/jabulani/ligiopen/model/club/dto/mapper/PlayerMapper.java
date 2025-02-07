@@ -36,6 +36,7 @@ public class PlayerMapper {
                 .username(player.getUsername())
                 .number(player.getNumber())
                 .playerPosition(player.getPlayerPosition())
+                .playerState(player.getPlayerState())
                 .age(player.getAge())
                 .height(player.getHeight())
                 .weight(player.getWeight())
