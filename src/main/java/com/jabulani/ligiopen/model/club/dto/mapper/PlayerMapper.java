@@ -1,22 +1,32 @@
 package com.jabulani.ligiopen.model.club.dto.mapper;
 
 import com.jabulani.ligiopen.model.aws.File;
+import com.jabulani.ligiopen.model.aws.dto.FileDto;
+import com.jabulani.ligiopen.model.aws.dto.mapper.FileMapper;
 import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.club.dto.PlayerDto;
 import com.jabulani.ligiopen.service.aws.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 @Component
 public class PlayerMapper {
 
     private final String BUCKET_NAME = "ligiopen";
 
+    private final FileMapper fileMapper;
+
     private final AwsService awsService;
     @Autowired
-    public PlayerMapper(AwsService awsService) {
+    public PlayerMapper(
+            AwsService awsService,
+            FileMapper fileMapper
+    ) {
         this.awsService = awsService;
+        this.fileMapper = fileMapper;
     }
     public PlayerDto playerDto(Player player) {
 
@@ -30,9 +40,21 @@ public class PlayerMapper {
                     .orElse(null);
         }
 
+        List<FileDto> files = new ArrayList<>();
+
+        FileDto playerMainPhoto = null;
+
+        if(player.getMainPhoto() != null) {
+            playerMainPhoto = fileMapper.fileDto(player.getMainPhoto());
+        }
+
+        if(!player.getFiles().isEmpty()) {
+            files.addAll(player.getFiles().stream().map(fileMapper::fileDto).toList());
+        }
+
         return PlayerDto.builder()
                 .playerId(player.getId())
-                .mainPhoto(awsService.getFileUrl(BUCKET_NAME, player.getMainPhoto().getName()))
+                .mainPhoto(playerMainPhoto)
                 .username(player.getUsername())
                 .number(player.getNumber())
                 .playerPosition(player.getPlayerPosition())
@@ -44,7 +66,7 @@ public class PlayerMapper {
                 .county(player.getCounty())
                 .town(player.getTown())
                 .clubId(clubId)
-                .files(player.getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).collect(Collectors.toList()))
+                .files(files)
                 .build();
     }
 }

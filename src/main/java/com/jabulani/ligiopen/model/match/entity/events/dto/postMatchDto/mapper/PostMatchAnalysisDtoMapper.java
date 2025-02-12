@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper;
 
+import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
 import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.PostMatchAnalysisDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,18 @@ public class PostMatchAnalysisDtoMapper {
 
     public PostMatchAnalysisDto postMatchAnalysisDto(PostMatchAnalysis postMatchAnalysis) {
 
+        Integer manOfTheMatchId = null;
+
+        if(postMatchAnalysis.getManOfTheMatch() != null) {
+            manOfTheMatchId = postMatchAnalysis.getManOfTheMatch().getId();
+        }
+
         return PostMatchAnalysisDto.builder()
                 .id(postMatchAnalysis.getId())
                 .marchFixtureId(postMatchAnalysis.getMatchFixture().getId())
                 .homeClubScore(postMatchAnalysis.getHomeClubScore())
                 .awayClubScore(postMatchAnalysis.getAwayClubScore())
-                .manOfTheMatchId(postMatchAnalysis.getManOfTheMatch().getId())
+                .manOfTheMatchId(manOfTheMatchId)
                 .minuteByMinuteCommentary(postMatchAnalysis.getMinuteByMinuteCommentary().stream().map(matchCommentaryDtoMapper::matchCommentaryDto).collect(Collectors.toList()))
                 .build();
     }

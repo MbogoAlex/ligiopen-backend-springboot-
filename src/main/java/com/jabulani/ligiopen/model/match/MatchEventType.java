@@ -16,5 +16,6 @@ public enum MatchEventType {
     THROW_IN,
     GOAL_KICK,
     KICK_OFF,
+    HALF_TIME,
     FULL_TIME
 }

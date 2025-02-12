@@ -5,14 +5,17 @@ import com.jabulani.ligiopen.dao.club.PlayerDao;
 import com.jabulani.ligiopen.dao.fileDao.FileDao;
 import com.jabulani.ligiopen.dao.match.MatchDao;
 import com.jabulani.ligiopen.model.aws.File;
+import com.jabulani.ligiopen.model.club.dto.PlayerDto;
 import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.club.entity.Player;
+import com.jabulani.ligiopen.model.club.entity.PlayerClub;
+import com.jabulani.ligiopen.model.match.MatchEventType;
 import com.jabulani.ligiopen.model.match.MatchStatus;
 import com.jabulani.ligiopen.model.match.entity.MatchCommentary;
 import com.jabulani.ligiopen.model.match.entity.MatchFixture;
 import com.jabulani.ligiopen.model.match.entity.MatchLocation;
 import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
-import com.jabulani.ligiopen.model.match.entity.events.MatchEvent;
+import com.jabulani.ligiopen.model.match.entity.events.*;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureUpdateDto;
@@ -24,7 +27,9 @@ import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.mapp
 import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.PostMatchAnalysisDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper.MatchCommentaryDtoMapper;
+import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper.PostMatchAnalysisDtoMapper;
 import com.jabulani.ligiopen.service.aws.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +54,7 @@ public class MatchServiceImpl implements MatchService{
     private final MatchLocationDtoMapper matchLocationDtoMapper;
     private final MatchFixtureDtoMapper matchFixtureDtoMapper;
     private final MatchCommentaryDtoMapper matchCommentaryDtoMapper;
+    private final PostMatchAnalysisDtoMapper postMatchAnalysisDtoMapper;
     @Autowired
     public MatchServiceImpl(
             AwsService awsService,
@@ -58,7 +64,8 @@ public class MatchServiceImpl implements MatchService{
             MatchFixtureDtoMapper matchFixtureDtoMapper,
             FileDao fileDao,
             PlayerDao playerDao,
-            MatchCommentaryDtoMapper matchCommentaryDtoMapper
+            MatchCommentaryDtoMapper matchCommentaryDtoMapper,
+            PostMatchAnalysisDtoMapper postMatchAnalysisDtoMapper
     ) {
         this.awsService = awsService;
         this.matchDao = matchDao;
@@ -68,6 +75,7 @@ public class MatchServiceImpl implements MatchService{
         this.fileDao = fileDao;
         this.playerDao = playerDao;
         this.matchCommentaryDtoMapper = matchCommentaryDtoMapper;
+        this.postMatchAnalysisDtoMapper = postMatchAnalysisDtoMapper;
     }
     @Transactional
     @Override
@@ -164,6 +172,8 @@ public class MatchServiceImpl implements MatchService{
 
         PostMatchAnalysis postMatchAnalysis = PostMatchAnalysis.builder()
                 .matchFixture(matchFixture)
+                .awayClubScore(0)
+                .homeClubScore(0)
                 .build();
 
         matchFixture.setPostMatchAnalysis(postMatchAnalysis);
@@ -189,7 +199,7 @@ public class MatchServiceImpl implements MatchService{
             matchFixture.setMatchDateTime(matchFixtureUpdateDto.getMatchDateTime());
         }
 
-        if(matchFixtureUpdateDto.getMatchStatus().equals(matchFixture.getStatus())) {
+        if(!matchFixtureUpdateDto.getMatchStatus().equals(matchFixture.getStatus())) {
             matchFixture.setStatus(matchFixtureUpdateDto.getMatchStatus());
         }
 
@@ -229,43 +239,221 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public MatchCommentaryDto createMatchCommentary(MatchCommentaryCreationDto matchCommentaryCreationDto) {
 
-//        for (MultipartFile file : files) {
-//            File locationFile = File.builder()
-//                    .matchLocation(matchLocation)
-//                    .name(awsService.uploadFile(BUCKET_NAME, file))
-//                    .build();
-//
-//            matchLocation.getLocationPhotos().add(locationFile);
-//        }
-
         PostMatchAnalysis postMatchAnalysis = matchDao.getPostMatchAnalysisById(matchCommentaryCreationDto.getPostMatchAnalysisId());
 
-        Player player = null;
+        Club awayClub = postMatchAnalysis.getMatchFixture().getAwayClub();
+        Club homeClub = postMatchAnalysis.getMatchFixture().getHomeClub();
 
-        if(matchCommentaryCreationDto.getMatchEvent().getMainPlayerId() != null) {
-            player = playerDao.getPlayerById(matchCommentaryCreationDto.getMatchEvent().getMainPlayerId());
+        Player mainPlayer = null;
+        Player secondaryPlayer = null;
+
+
+
+        Integer awayClubScore = postMatchAnalysis.getAwayClubScore();
+        Integer homeClubScore = postMatchAnalysis.getHomeClubScore();
+
+
+
+        if (matchCommentaryCreationDto.getMatchEvent().getMainPlayerId() != null) {
+            MatchEventType matchEventType = matchCommentaryCreationDto.getMatchEvent().getMatchEventType();
+            mainPlayer = playerDao.getPlayerById(matchCommentaryCreationDto.getMatchEvent().getMainPlayerId());
+
+            if(matchEventType.equals(MatchEventType.GOAL)) {
+                Club mainPlayerClub = mainPlayer.getPlayerClubs().stream()
+                        .filter(playerClub -> !playerClub.getArchived())
+                        .map(PlayerClub::getClub).findFirst().orElse(null);
+
+                if(homeClub.equals(mainPlayerClub)) {
+                    homeClubScore = homeClubScore + 1;
+                } else {
+                    awayClubScore = awayClubScore + 1;
+                }
+
+                postMatchAnalysis.setAwayClubScore(awayClubScore);
+                postMatchAnalysis.setHomeClubScore(homeClubScore);
+
+                matchDao.updatePostMatchAnalysis(postMatchAnalysis);
+            } else if(matchEventType.equals(MatchEventType.OWN_GOAL)) {
+                Club mainPlayerClub = mainPlayer.getPlayerClubs().stream()
+                        .filter(playerClub -> !playerClub.getArchived())
+                        .map(PlayerClub::getClub).findFirst().orElse(null);
+
+                if(homeClub.equals(mainPlayerClub)) {
+                    awayClubScore = awayClubScore + 1;
+                } else {
+                    homeClubScore = homeClubScore + 1;
+                }
+
+                postMatchAnalysis.setAwayClubScore(awayClubScore);
+                postMatchAnalysis.setHomeClubScore(homeClubScore);
+
+                matchDao.updatePostMatchAnalysis(postMatchAnalysis);
+            }
+
         }
 
-        MatchEvent matchEvent = MatchEvent.builder()
-                .title(matchCommentaryCreationDto.getMatchEvent().getTitle())
-                .summary(matchCommentaryCreationDto.getMatchEvent().getSummary())
-                .minute(matchCommentaryCreationDto.getMinute())
-                .createdAt(LocalDateTime.now())
-                .player(player)
-                .matchEventType(matchCommentaryCreationDto.getMatchEvent().getMatchEventType())
-                .build();
+
+
+        if(matchCommentaryCreationDto.getMatchEvent().getSecondaryPlayerId() != null) {
+            secondaryPlayer = playerDao.getPlayerById(matchCommentaryCreationDto.getMatchEvent().getSecondaryPlayerId());
+        }
+
+        MatchEvent matchEvent = new MatchEvent();
+
+        switch (matchCommentaryCreationDto.getMatchEvent().getMatchEventType()) {
+            case GOAL -> {
+                GoalEvent goalEvent = new GoalEvent();
+                goalEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                goalEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                goalEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                goalEvent.setCreatedAt(LocalDateTime.now());
+                goalEvent.setPlayer(mainPlayer);
+                goalEvent.setAssistingPlayer(secondaryPlayer);
+                goalEvent.setMatchEventType(MatchEventType.GOAL);
+                matchEvent = goalEvent;
+            }
+
+            case OWN_GOAL -> {
+                OwnGoalEvent ownGoalEvent = new OwnGoalEvent();
+                ownGoalEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                ownGoalEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                ownGoalEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                ownGoalEvent.setCreatedAt(LocalDateTime.now());
+                ownGoalEvent.setPlayer(mainPlayer);
+                ownGoalEvent.setMatchEventType(MatchEventType.OWN_GOAL);
+                matchEvent = ownGoalEvent;
+            }
+
+            case SUBSTITUTION -> {
+                SubstitutionEvent substitutionEvent = new SubstitutionEvent();
+                substitutionEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                substitutionEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                substitutionEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                substitutionEvent.setCreatedAt(LocalDateTime.now());
+                substitutionEvent.setPlayer(mainPlayer);
+                substitutionEvent.setSubbedOutPlayer(secondaryPlayer);
+                substitutionEvent.setMatchEventType(MatchEventType.SUBSTITUTION);
+                matchEvent = substitutionEvent;
+            }
+
+            case FOUL -> {
+                FoulEvent foulEvent = new FoulEvent();
+                foulEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                foulEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                foulEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                foulEvent.setCreatedAt(LocalDateTime.now());
+                foulEvent.setPlayer(mainPlayer);
+                foulEvent.setFouledPlayer(secondaryPlayer);
+                foulEvent.setIsRedCard(matchCommentaryCreationDto.getMatchEvent().getIsRedCard());
+                foulEvent.setIsYellowCard(matchCommentaryCreationDto.getMatchEvent().getIsYellowCard());
+                foulEvent.setMatchEventType(MatchEventType.FOUL);
+                matchEvent = foulEvent;
+            }
+
+            case CORNER_KICK -> {
+                CornerKickEvent cornerKickEvent = new CornerKickEvent();
+                cornerKickEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                cornerKickEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                cornerKickEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                cornerKickEvent.setCreatedAt(LocalDateTime.now());
+                cornerKickEvent.setPlayer(mainPlayer);
+                cornerKickEvent.setMatchEventType(MatchEventType.CORNER_KICK);
+                matchEvent = cornerKickEvent;
+            }
+
+            case FREE_KICK -> {
+                FreeKickEvent freeKickEvent = new FreeKickEvent();
+                freeKickEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                freeKickEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                freeKickEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                freeKickEvent.setCreatedAt(LocalDateTime.now());
+                freeKickEvent.setPlayer(mainPlayer);
+                freeKickEvent.setMatchEventType(MatchEventType.FREE_KICK);
+                matchEvent = freeKickEvent;
+            }
+
+            case PENALTY -> {
+                PenaltyEvent penaltyEvent = new PenaltyEvent();
+                penaltyEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                penaltyEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                penaltyEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                penaltyEvent.setCreatedAt(LocalDateTime.now());
+                penaltyEvent.setPlayer(mainPlayer);
+                penaltyEvent.setIsScored(matchCommentaryCreationDto.getMatchEvent().getIsScored());
+                penaltyEvent.setMatchEventType(MatchEventType.PENALTY);
+                matchEvent = penaltyEvent;
+            }
+
+            case INJURY -> {
+                InjuryEvent injuryEvent = new InjuryEvent();
+                injuryEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                injuryEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                injuryEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                injuryEvent.setCreatedAt(LocalDateTime.now());
+                injuryEvent.setPlayer(mainPlayer);
+                injuryEvent.setMatchEventType(MatchEventType.INJURY);
+                matchEvent = injuryEvent;
+            }
+
+            case THROW_IN -> {
+                ThrowInEvent throwInEvent = new ThrowInEvent();
+                throwInEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                throwInEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                throwInEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                throwInEvent.setCreatedAt(LocalDateTime.now());
+                throwInEvent.setPlayer(mainPlayer);
+                throwInEvent.setMatchEventType(MatchEventType.THROW_IN);
+                matchEvent = throwInEvent;
+            }
+
+            case KICK_OFF -> {
+                KickOffEvent kickOffEvent = new KickOffEvent();
+                kickOffEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                kickOffEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                kickOffEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                kickOffEvent.setCreatedAt(LocalDateTime.now());
+                kickOffEvent.setPlayer(mainPlayer);
+                kickOffEvent.setMatchEventType(MatchEventType.KICK_OFF);
+                matchEvent = kickOffEvent;
+            }
+
+            case FULL_TIME -> {
+                FullTimeEvent fullTimeEvent = new FullTimeEvent();
+                fullTimeEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                fullTimeEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                fullTimeEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                fullTimeEvent.setCreatedAt(LocalDateTime.now());
+                fullTimeEvent.setPlayer(mainPlayer);
+                fullTimeEvent.setMatchEventType(MatchEventType.FULL_TIME);
+                matchEvent = fullTimeEvent;
+            }
+
+            case OFFSIDE -> {
+                OffsideEvent offsideEvent = new OffsideEvent();
+                offsideEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                offsideEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                offsideEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                offsideEvent.setCreatedAt(LocalDateTime.now());
+                offsideEvent.setPlayer(mainPlayer);
+                offsideEvent.setMatchEventType(MatchEventType.OFFSIDE);
+                matchEvent = offsideEvent;
+
+            }
+        }
 
         MatchCommentary matchCommentary = MatchCommentary.builder()
                 .postMatchAnalysis(postMatchAnalysis)
                 .createdAt(LocalDateTime.now())
                 .archived(false)
                 .matchEvent(matchEvent)
+                .minute(matchCommentaryCreationDto.getMinute())
                 .build();
 
         matchEvent.setMatchCommentary(matchCommentary);
 
         return matchCommentaryDtoMapper.matchCommentaryDto(matchDao.createMatchCommentary(matchCommentary));
     }
+
     @Transactional
     @Override
     public MatchCommentaryDto updateMatchCommentary(MatchCommentaryUpdateDto matchCommentaryUpdateDto) {
@@ -289,11 +477,15 @@ public class MatchServiceImpl implements MatchService{
             matchCommentary.setUpdatedAt(updatedAt);
         }
 
-        if(!matchEvent.getPlayer().getId().equals(matchCommentaryUpdateDto.getMatchEvent().getMainPlayerId())) {
-            Player player = playerDao.getPlayerById(matchCommentaryUpdateDto.getMatchEvent().getMainPlayerId());
-            matchEvent.setPlayer(player);
-            matchCommentary.setUpdatedAt(updatedAt);
+        if(matchEvent.getPlayer() != null) {
+            if(!matchEvent.getPlayer().getId().equals(matchCommentaryUpdateDto.getMatchEvent().getMainPlayerId())) {
+                Player player = playerDao.getPlayerById(matchCommentaryUpdateDto.getMatchEvent().getMainPlayerId());
+                matchEvent.setPlayer(player);
+                matchCommentary.setUpdatedAt(updatedAt);
+            }
         }
+
+
 
         return matchCommentaryDtoMapper.matchCommentaryDto(matchDao.updateMatchCommentary(matchCommentary));
     }
@@ -309,6 +501,7 @@ public class MatchServiceImpl implements MatchService{
                     .build();
 
             matchCommentary.getFiles().add(eventFile);
+            eventFile.setMatchCommentary(matchCommentary);
         }
         return matchCommentaryDtoMapper.matchCommentaryDto(matchDao.updateMatchCommentary(matchCommentary));
     }
@@ -321,5 +514,10 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public List<MatchCommentaryDto> getAllMatchCommentaries() {
         return matchDao.getAllMatchCommentaries().stream().map(matchCommentaryDtoMapper::matchCommentaryDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostMatchAnalysisDto getPostMatchDetails(Integer postMatchAnalysisId) {
+        return postMatchAnalysisDtoMapper.postMatchAnalysisDto(matchDao.getPostMatchAnalysisById(postMatchAnalysisId));
     }
 }

@@ -1,5 +1,7 @@
 package com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto.mapper;
 
+import com.jabulani.ligiopen.model.aws.dto.FileDto;
+import com.jabulani.ligiopen.model.aws.dto.mapper.FileMapper;
 import com.jabulani.ligiopen.model.match.entity.events.*;
 import com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto.*;
 import com.jabulani.ligiopen.service.aws.AwsService;
@@ -16,201 +18,360 @@ public class MatchEventsDtoMapper {
     private final String BUCKET_NAME = "ligiopen";
 
     private final AwsService awsService;
+
+    private final FileMapper fileMapper;
     @Autowired
-    public MatchEventsDtoMapper(AwsService awsService) {
+    public MatchEventsDtoMapper(
+            AwsService awsService,
+            FileMapper fileMapper
+    ) {
         this.awsService = awsService;
+        this.fileMapper = fileMapper;
     }
     public CornerKickEventDto cornerKickEventDto(CornerKickEvent cornerKickEvent) {
-        List<String> files = new ArrayList<>();
-        if(!cornerKickEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(cornerKickEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (cornerKickEvent.getMatchCommentary() != null &&
+                cornerKickEvent.getMatchCommentary().getFiles() != null &&
+                !cornerKickEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(cornerKickEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (CornerKickEventDto) CornerKickEventDto.builder()
-                .title(cornerKickEvent.getTitle())
-                .summary(cornerKickEvent.getSummary())
-                .minute(cornerKickEvent.getMinute())
-                .matchEventType(cornerKickEvent.getMatchEventType())
-                .mainPlayerId(cornerKickEvent.getPlayer().getId())
-                .files(files)
-                .build();
+        CornerKickEventDto cornerKickEventDto = new CornerKickEventDto();
+        cornerKickEventDto.setTitle(cornerKickEvent.getTitle());
+        cornerKickEventDto.setSummary(cornerKickEvent.getSummary());
+        cornerKickEventDto.setMinute(cornerKickEvent.getMinute());
+        cornerKickEventDto.setMatchEventType(cornerKickEvent.getMatchEventType());
+        cornerKickEventDto.setMainPlayerId(cornerKickEvent.getPlayer() != null ? cornerKickEvent.getPlayer().getId() : null);
+        cornerKickEventDto.setFiles(files);
+
+        return cornerKickEventDto;
     }
+
 
     public FoulEventDto foulEventDto(FoulEvent foulEvent) {
-        List<String> files = new ArrayList<>();
-        if(!foulEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(foulEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (foulEvent.getMatchCommentary() != null &&
+                foulEvent.getMatchCommentary().getFiles() != null &&
+                !foulEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(foulEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
-        return FoulEventDto.builder()
-                .title(foulEvent.getTitle())
-                .summary(foulEvent.getSummary())
-                .minute(foulEvent.getMinute())
-                .matchEventType(foulEvent.getMatchEventType())
-                .mainPlayerId(foulEvent.getPlayer().getId())
-                .fouledPlayerId(foulEvent.getFouledPlayer().getId())
-                .isYellowCard(foulEvent.getIsYellowCard())
-                .isRedCard(foulEvent.getIsRedCard())
-                .files(files)
-                .build();
+
+        FoulEventDto foulEventDto = new FoulEventDto();
+        foulEventDto.setTitle(foulEvent.getTitle());
+        foulEventDto.setSummary(foulEvent.getSummary());
+        foulEventDto.setMinute(foulEvent.getMinute());
+        foulEventDto.setMatchEventType(foulEvent.getMatchEventType());
+        foulEventDto.setMainPlayerId(foulEvent.getPlayer() != null ? foulEvent.getPlayer().getId() : null);
+        foulEventDto.setFouledPlayerId(foulEvent.getFouledPlayer() != null ? foulEvent.getFouledPlayer().getId() : null);
+        foulEventDto.setIsYellowCard(foulEvent.getIsYellowCard());
+        foulEventDto.setIsRedCard(foulEvent.getIsRedCard());
+        foulEventDto.setFiles(files);
+
+        return foulEventDto;
     }
+
 
     public FreeKickEventDto freeKickEventDto(FreeKickEvent freeKickEvent) {
-        List<String> files = new ArrayList<>();
-        if(!freeKickEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(freeKickEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (freeKickEvent.getMatchCommentary() != null &&
+                freeKickEvent.getMatchCommentary().getFiles() != null &&
+                !freeKickEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(freeKickEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
-        return (FreeKickEventDto) FreeKickEventDto.builder()
-                .title(freeKickEvent.getTitle())
-                .summary(freeKickEvent.getSummary())
-                .minute(freeKickEvent.getMinute())
-                .matchEventType(freeKickEvent.getMatchEventType())
-                .mainPlayerId(freeKickEvent.getPlayer().getId())
-                .files(files)
-                .build();
+
+        FreeKickEventDto freeKickEventDto = new FreeKickEventDto();
+        freeKickEventDto.setTitle(freeKickEvent.getTitle());
+        freeKickEventDto.setSummary(freeKickEvent.getSummary());
+        freeKickEventDto.setMinute(freeKickEvent.getMinute());
+        freeKickEventDto.setMatchEventType(freeKickEvent.getMatchEventType());
+        freeKickEventDto.setMainPlayerId(freeKickEvent.getPlayer() != null ? freeKickEvent.getPlayer().getId() : null);
+        freeKickEventDto.setFiles(files);
+
+        return freeKickEventDto;
     }
+
 
     public FullTimeEventDto fullTimeEventDto(FullTimeEvent fullTimeEvent) {
-        List<String> files = new ArrayList<>();
-        if(!fullTimeEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(fullTimeEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (fullTimeEvent.getMatchCommentary() != null &&
+                fullTimeEvent.getMatchCommentary().getFiles() != null &&
+                !fullTimeEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(fullTimeEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
-        return (FullTimeEventDto) FullTimeEventDto.builder()
-                .title(fullTimeEvent.getTitle())
-                .summary(fullTimeEvent.getSummary())
-                .minute(fullTimeEvent.getMinute())
-                .matchEventType(fullTimeEvent.getMatchEventType())
-                .mainPlayerId(fullTimeEvent.getPlayer().getId())
-                .files(files)
-                .build();
+
+        FullTimeEventDto fullTimeEventDto = new FullTimeEventDto();
+        fullTimeEventDto.setTitle(fullTimeEvent.getTitle());
+        fullTimeEventDto.setSummary(fullTimeEvent.getSummary());
+        fullTimeEventDto.setMinute(fullTimeEvent.getMinute());
+        fullTimeEventDto.setMatchEventType(fullTimeEvent.getMatchEventType());
+        fullTimeEventDto.setMainPlayerId(fullTimeEvent.getPlayer() != null ? fullTimeEvent.getPlayer().getId() : null);
+        fullTimeEventDto.setFiles(files);
+
+        return fullTimeEventDto;
     }
+
 
     public GoalEventDto goalEventDto(GoalEvent goalEvent) {
-        List<String> files = new ArrayList<>();
-        if(!goalEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(goalEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (goalEvent.getMatchCommentary() != null &&
+                goalEvent.getMatchCommentary().getFiles() != null &&
+                !goalEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(goalEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (GoalEventDto) GoalEventDto.builder()
-                .title(goalEvent.getTitle())
-                .summary(goalEvent.getSummary())
-                .minute(goalEvent.getMinute())
-                .matchEventType(goalEvent.getMatchEventType())
-                .mainPlayerId(goalEvent.getPlayer().getId())
-                .files(files)
-                .build();
+        GoalEventDto goalEventDto = new GoalEventDto();
+        goalEventDto.setTitle(goalEvent.getTitle());
+        goalEventDto.setSummary(goalEvent.getSummary());
+        goalEventDto.setMinute(goalEvent.getMinute());
+        goalEventDto.setMatchEventType(goalEvent.getMatchEventType());
+        goalEventDto.setMainPlayerId(goalEvent.getPlayer() != null ? goalEvent.getPlayer().getId() : null);
+        goalEventDto.setSecondaryPlayerId(goalEvent.getAssistingPlayer() != null ? goalEvent.getAssistingPlayer().getId() : null);
+        goalEventDto.setFiles(files);
+
+        return goalEventDto;
     }
+
 
     public InjuryEventDto injuryEventDto(InjuryEvent injuryEvent) {
-        List<String> files = new ArrayList<>();
-        if(!injuryEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(injuryEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (injuryEvent.getMatchCommentary() != null &&
+                injuryEvent.getMatchCommentary().getFiles() != null &&
+                !injuryEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(injuryEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (InjuryEventDto) InjuryEventDto.builder()
-                .title(injuryEvent.getTitle())
-                .summary(injuryEvent.getSummary())
-                .minute(injuryEvent.getMinute())
-                .matchEventType(injuryEvent.getMatchEventType())
-                .mainPlayerId(injuryEvent.getPlayer().getId())
-                .files(files)
-                .build();
+        InjuryEventDto injuryEventDto = new InjuryEventDto();
+        injuryEventDto.setTitle(injuryEvent.getTitle());
+        injuryEventDto.setSummary(injuryEvent.getSummary());
+        injuryEventDto.setMinute(injuryEvent.getMinute());
+        injuryEventDto.setMatchEventType(injuryEvent.getMatchEventType());
+        injuryEventDto.setMainPlayerId(injuryEvent.getPlayer() != null ? injuryEvent.getPlayer().getId() : null);
+        injuryEventDto.setFiles(files);
+
+        return injuryEventDto;
     }
 
+
     public KickOffEventDto kickOffEventDto(KickOffEvent kickOffEvent) {
-        List<String> files = new ArrayList<>();
-        if(!kickOffEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(kickOffEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        Integer playerId = null;
+
+        if(kickOffEvent.getPlayer() != null) {
+            playerId = kickOffEvent.getId();
         }
 
-        return (KickOffEventDto) KickOffEventDto.builder()
-                .title(kickOffEvent.getTitle())
-                .summary(kickOffEvent.getSummary())
-                .minute(kickOffEvent.getMinute())
-                .matchEventType(kickOffEvent.getMatchEventType())
-                .mainPlayerId(kickOffEvent.getPlayer().getId())
-                .files(files)
-                .build();
+
+        if(kickOffEvent.getMatchCommentary().getFiles() != null && !kickOffEvent.getMatchCommentary().getFiles().isEmpty()) {
+            files.addAll(kickOffEvent.getMatchCommentary().getFiles().stream().map(fileMapper::fileDto).toList());
+        }
+
+        KickOffEventDto kickOffEventDto = new KickOffEventDto();
+        kickOffEventDto.setTitle(kickOffEvent.getTitle());
+        kickOffEventDto.setSummary(kickOffEvent.getSummary());
+        kickOffEventDto.setMinute(kickOffEvent.getMinute());
+        kickOffEventDto.setMatchEventType(kickOffEvent.getMatchEventType());
+        kickOffEventDto.setMainPlayerId(playerId);
+        kickOffEventDto.setFiles(files);
+
+        return kickOffEventDto;
+    }
+
+    public HalfTimeEventDto halfTimeEventDto(HalfTimeEvent halfTimeEvent) {
+        List<FileDto> files = new ArrayList<>();
+
+        Integer playerId = null;
+
+        if(halfTimeEvent.getPlayer() != null) {
+            playerId = halfTimeEvent.getId();
+        }
+
+
+        if(halfTimeEvent.getMatchCommentary().getFiles() != null && !halfTimeEvent.getMatchCommentary().getFiles().isEmpty()) {
+            files.addAll(halfTimeEvent.getMatchCommentary().getFiles().stream().map(fileMapper::fileDto).toList());
+        }
+
+        HalfTimeEventDto halfTimeEventDto = new HalfTimeEventDto();
+        halfTimeEventDto.setTitle(halfTimeEvent.getTitle());
+        halfTimeEventDto.setSummary(halfTimeEvent.getSummary());
+        halfTimeEventDto.setMinute(halfTimeEvent.getMinute());
+        halfTimeEventDto.setMatchEventType(halfTimeEvent.getMatchEventType());
+        halfTimeEventDto.setMainPlayerId(playerId);
+        halfTimeEventDto.setFiles(files);
+        halfTimeEventDto.setMatchEventType(halfTimeEvent.getMatchEventType());
+
+        return halfTimeEventDto;
+    }
+
+    public GoalKickEventDto goalKickEventDto(GoalKickEvent goalKickEvent) {
+        List<FileDto> files = new ArrayList<>();
+
+        Integer playerId = null;
+
+        if(goalKickEvent.getPlayer() != null) {
+            playerId = goalKickEvent.getId();
+        }
+
+
+        if(goalKickEvent.getMatchCommentary().getFiles() != null && !goalKickEvent.getMatchCommentary().getFiles().isEmpty()) {
+            files.addAll(goalKickEvent.getMatchCommentary().getFiles().stream().map(fileMapper::fileDto).toList());
+        }
+
+        GoalKickEventDto goalKickEventDto = new GoalKickEventDto();
+        goalKickEventDto.setTitle(goalKickEvent.getTitle());
+        goalKickEventDto.setSummary(goalKickEvent.getSummary());
+        goalKickEventDto.setMinute(goalKickEvent.getMinute());
+        goalKickEventDto.setMatchEventType(goalKickEvent.getMatchEventType());
+        goalKickEventDto.setMainPlayerId(playerId);
+        goalKickEventDto.setFiles(files);
+        goalKickEventDto.setMatchEventType(goalKickEvent.getMatchEventType());
+
+        return goalKickEventDto;
     }
 
     public OffsideEventDto offsideEventDto(OffsideEvent offsideEvent) {
-        List<String> files = new ArrayList<>();
-        if(!offsideEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(offsideEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (offsideEvent.getMatchCommentary() != null &&
+                offsideEvent.getMatchCommentary().getFiles() != null &&
+                !offsideEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(offsideEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (OffsideEventDto) OffsideEventDto.builder()
-                .title(offsideEvent.getTitle())
-                .summary(offsideEvent.getSummary())
-                .minute(offsideEvent.getMinute())
-                .matchEventType(offsideEvent.getMatchEventType())
-                .mainPlayerId(offsideEvent.getPlayer().getId())
-                .files(files)
-                .build();
+        OffsideEventDto offsideEventDto = new OffsideEventDto();
+        offsideEventDto.setTitle(offsideEvent.getTitle());
+        offsideEventDto.setSummary(offsideEvent.getSummary());
+        offsideEventDto.setMinute(offsideEvent.getMinute());
+        offsideEventDto.setMatchEventType(offsideEvent.getMatchEventType());
+        offsideEventDto.setMainPlayerId(offsideEvent.getPlayer() != null ? offsideEvent.getPlayer().getId() : null);
+        offsideEventDto.setFiles(files);
+
+        return offsideEventDto;
     }
+
 
     public PenaltyEventDto penaltyEventDto(PenaltyEvent penaltyEvent) {
-        List<String> files = new ArrayList<>();
-        if(!penaltyEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(penaltyEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (penaltyEvent.getMatchCommentary() != null &&
+                penaltyEvent.getMatchCommentary().getFiles() != null &&
+                !penaltyEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(penaltyEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (PenaltyEventDto) PenaltyEventDto.builder()
-                .title(penaltyEvent.getTitle())
-                .summary(penaltyEvent.getSummary())
-                .minute(penaltyEvent.getMinute())
-                .matchEventType(penaltyEvent.getMatchEventType())
-                .mainPlayerId(penaltyEvent.getPlayer().getId())
-                .isScored(penaltyEvent.getIsScored())
-                .files(files)
-                .build();
+        PenaltyEventDto penaltyEventDto = new PenaltyEventDto();
+        penaltyEventDto.setTitle(penaltyEvent.getTitle());
+        penaltyEventDto.setSummary(penaltyEvent.getSummary());
+        penaltyEventDto.setMinute(penaltyEvent.getMinute());
+        penaltyEventDto.setMatchEventType(penaltyEvent.getMatchEventType());
+        penaltyEventDto.setMainPlayerId(penaltyEvent.getPlayer() != null ? penaltyEvent.getPlayer().getId() : null);
+        penaltyEventDto.setIsScored(penaltyEvent.getIsScored());
+        penaltyEventDto.setFiles(files);
+
+        return penaltyEventDto;
     }
+
 
     public SubstitutionEventDto substitutionEventDto(SubstitutionEvent substitutionEvent) {
-        List<String> files = new ArrayList<>();
-        if(!substitutionEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(substitutionEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (substitutionEvent.getMatchCommentary() != null &&
+                substitutionEvent.getMatchCommentary().getFiles() != null &&
+                !substitutionEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(substitutionEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (SubstitutionEventDto) SubstitutionEventDto.builder()
-                .title(substitutionEvent.getTitle())
-                .summary(substitutionEvent.getSummary())
-                .minute(substitutionEvent.getMinute())
-                .matchEventType(substitutionEvent.getMatchEventType())
-                .mainPlayerId(substitutionEvent.getPlayer().getId())
-                .subbedOutPlayerId(substitutionEvent.getSubbedOutPlayer().getId())
-                .files(files)
-                .build();
+        SubstitutionEventDto substitutionEventDto = new SubstitutionEventDto();
+        substitutionEventDto.setTitle(substitutionEvent.getTitle());
+        substitutionEventDto.setSummary(substitutionEvent.getSummary());
+        substitutionEventDto.setMinute(substitutionEvent.getMinute());
+        substitutionEventDto.setMatchEventType(substitutionEvent.getMatchEventType());
+        substitutionEventDto.setMainPlayerId(substitutionEvent.getPlayer() != null ? substitutionEvent.getPlayer().getId() : null);
+        substitutionEventDto.setSubbedOutPlayerId(substitutionEvent.getSubbedOutPlayer() != null ? substitutionEvent.getSubbedOutPlayer().getId() : null);
+        substitutionEventDto.setFiles(files);
+
+        return substitutionEventDto;
     }
+
 
     public ThrowInEventDto throwInEventDto(ThrowInEvent throwInEvent) {
-        List<String> files = new ArrayList<>();
-        if(!throwInEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(throwInEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (throwInEvent.getMatchCommentary() != null &&
+                throwInEvent.getMatchCommentary().getFiles() != null &&
+                !throwInEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(throwInEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (ThrowInEventDto) ThrowInEventDto.builder()
-                .title(throwInEvent.getTitle())
-                .summary(throwInEvent.getSummary())
-                .minute(throwInEvent.getMinute())
-                .matchEventType(throwInEvent.getMatchEventType())
-                .mainPlayerId(throwInEvent.getPlayer().getId())
-                .files(files)
-                .build();
+        ThrowInEventDto throwInEventDto = new ThrowInEventDto();
+        throwInEventDto.setTitle(throwInEvent.getTitle());
+        throwInEventDto.setSummary(throwInEvent.getSummary());
+        throwInEventDto.setMinute(throwInEvent.getMinute());
+        throwInEventDto.setMatchEventType(throwInEvent.getMatchEventType());
+        throwInEventDto.setMainPlayerId(throwInEvent.getPlayer() != null ? throwInEvent.getPlayer().getId() : null);
+        throwInEventDto.setFiles(files);
+
+        return throwInEventDto;
     }
+
 
     public OwnGoalEventDto ownGoalEventDto(OwnGoalEvent ownGoalEvent) {
-        List<String> files = new ArrayList<>();
-        if(!ownGoalEvent.getMatchCommentary().getFiles().isEmpty()) {
-            files.addAll(ownGoalEvent.getMatchCommentary().getFiles().stream().map(file -> awsService.getFileUrl(BUCKET_NAME, file.getName())).toList());
+        List<FileDto> files = new ArrayList<>();
+
+        if (ownGoalEvent.getMatchCommentary() != null &&
+                ownGoalEvent.getMatchCommentary().getFiles() != null &&
+                !ownGoalEvent.getMatchCommentary().getFiles().isEmpty()) {
+
+            files.addAll(ownGoalEvent.getMatchCommentary().getFiles().stream()
+                    .map(fileMapper::fileDto)
+                    .toList());
         }
 
-        return (OwnGoalEventDto) OwnGoalEventDto.builder()
-                .title(ownGoalEvent.getTitle())
-                .summary(ownGoalEvent.getSummary())
-                .minute(ownGoalEvent.getMinute())
-                .matchEventType(ownGoalEvent.getMatchEventType())
-                .mainPlayerId(ownGoalEvent.getPlayer().getId())
-                .files(files)
-                .build();
+        OwnGoalEventDto ownGoalEventDto = new OwnGoalEventDto();
+        ownGoalEventDto.setTitle(ownGoalEvent.getTitle());
+        ownGoalEventDto.setSummary(ownGoalEvent.getSummary());
+        ownGoalEventDto.setMinute(ownGoalEvent.getMinute());
+        ownGoalEventDto.setMatchEventType(ownGoalEvent.getMatchEventType());
+        ownGoalEventDto.setMainPlayerId(ownGoalEvent.getPlayer() != null ? ownGoalEvent.getPlayer().getId() : null);
+        ownGoalEventDto.setFiles(files);
+
+        return ownGoalEventDto;
     }
+
 }

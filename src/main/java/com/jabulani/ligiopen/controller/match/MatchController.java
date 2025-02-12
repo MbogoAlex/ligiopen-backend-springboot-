@@ -37,4 +37,5 @@ public interface MatchController {
 
     ResponseEntity<Response> getMatchCommentary(Integer commentaryId);
     ResponseEntity<Response> getAllMatchCommentaries();
+    ResponseEntity<Response> getPostMatchDetails(Integer postMatchAnalysisId);
 }

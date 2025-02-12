@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.model.club.dto;
 
+import com.jabulani.ligiopen.model.aws.dto.FileDto;
 import com.jabulani.ligiopen.model.club.PlayerPosition;
 import com.jabulani.ligiopen.model.match.PlayerState;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @Builder
 public class PlayerDto {
     private Integer playerId;
-    private String mainPhoto;
+    private FileDto mainPhoto;
     private String username;
     private Integer number;
     private PlayerPosition playerPosition;
@@ -26,6 +27,6 @@ public class PlayerDto {
     private String county;
     private String town;
     private Integer clubId;
-    private List<String> files;
+    private List<FileDto> files;
     private PlayerState playerState;
 }

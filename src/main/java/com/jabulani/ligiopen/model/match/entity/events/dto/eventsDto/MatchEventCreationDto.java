@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto;
 
+import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.match.MatchEventType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +18,5 @@ public class MatchEventCreationDto {
     private String minute;
     private MatchEventType matchEventType;
     private Integer mainPlayerId;
+
 }

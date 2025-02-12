@@ -13,7 +13,6 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -147,5 +146,10 @@ public class MatchControllerImpl implements MatchController{
     @Override
     public ResponseEntity<Response> getAllMatchCommentaries() {
         return buildResponse.createResponse("match", matchService.getAllMatchCommentaries(), "Match commentaries fetched", HttpStatus.OK);
+    }
+    @GetMapping("post-match-details/{postMatchAnalysisId}")
+    @Override
+    public ResponseEntity<Response> getPostMatchDetails(@PathVariable("postMatchAnalysisId") Integer postMatchAnalysisId) {
+        return buildResponse.createResponse("match", matchService.getPostMatchDetails(postMatchAnalysisId), "Post match details fetched", HttpStatus.OK);
     }
 }

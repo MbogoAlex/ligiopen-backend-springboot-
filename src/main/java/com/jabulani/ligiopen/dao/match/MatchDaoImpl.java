@@ -102,6 +102,11 @@ public class MatchDaoImpl implements MatchDao{
     }
 
     @Override
+    public PostMatchAnalysis updatePostMatchAnalysis(PostMatchAnalysis postMatchAnalysis) {
+        return entityManager.merge(postMatchAnalysis);
+    }
+
+    @Override
     public PostMatchAnalysis getPostMatchAnalysisById(Integer id) {
         TypedQuery<PostMatchAnalysis> query = entityManager.createQuery("from PostMatchAnalysis where id = :id", PostMatchAnalysis.class);
         query.setParameter("id", id);

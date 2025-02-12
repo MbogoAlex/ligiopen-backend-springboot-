@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto;
 
+import com.jabulani.ligiopen.model.aws.dto.FileDto;
 import com.jabulani.ligiopen.model.match.MatchEventType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,10 @@ public class MatchEventDto {
     private String minute;
     private MatchEventType matchEventType;
     private Integer mainPlayerId;
-    private List<String> files;
+    private Integer secondaryPlayerId;
+    private Integer fouledPlayerId;
+    private Boolean isYellowCard;
+    private Boolean isRedCard;
+    private Boolean isScored;
+    private List<FileDto> files;
 }

@@ -25,6 +25,8 @@ public interface MatchDao {
     List<MatchEvent> getMatchEvents();
 
     PostMatchAnalysis createPostMatchAnalysis(PostMatchAnalysis postMatchAnalysis);
+
+    PostMatchAnalysis updatePostMatchAnalysis(PostMatchAnalysis postMatchAnalysis);
     PostMatchAnalysis getPostMatchAnalysisById(Integer id);
 
     List<PostMatchAnalysis> getAllPostMatchAnalysis();

@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.model.club.dto;
 
+import com.jabulani.ligiopen.model.aws.dto.FileDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,8 @@ import java.util.List;
 @Builder
 public class ClubDetailsDto {
     private Integer clubId;
-    private String clubLogo;
-    private String clubMainPhoto;
+    private FileDto clubLogo;
+    private FileDto clubMainPhoto;
     private String name;
     private String description;
     private String country;
@@ -27,5 +28,5 @@ public class ClubDetailsDto {
     private Boolean archived;
     private LocalDateTime archivedAt;
     private List<PlayerDto> players;
-    private List<String> files;
+    private List<FileDto> files;
 }
