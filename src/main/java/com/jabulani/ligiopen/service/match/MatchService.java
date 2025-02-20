@@ -30,7 +30,7 @@ public interface MatchService {
     MatchFixtureDto removeMatchFixtureFile(Integer fixtureId, Integer fileId);
 
     MatchFixtureDto getMatchFixtureById(Integer id);
-    List<MatchFixtureDto> getAllMatchFixtures();
+    List<MatchFixtureDto> getAllMatchFixtures(String status);
     MatchCommentaryDto createMatchCommentary(MatchCommentaryCreationDto matchCommentaryCreationDto);
 
 

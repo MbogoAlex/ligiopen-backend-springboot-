@@ -109,8 +109,10 @@ public class MatchControllerImpl implements MatchController{
     }
     @GetMapping("match-fixture/all")
     @Override
-    public ResponseEntity<Response> getAllMatchFixtures() {
-        return buildResponse.createResponse("match", matchService.getAllMatchFixtures(), "Match fixtures fetched", HttpStatus.OK);
+    public ResponseEntity<Response> getAllMatchFixtures(
+            @RequestParam(name = "status", required = false) String status
+    ) {
+        return buildResponse.createResponse("match", matchService.getAllMatchFixtures(status), "Match fixtures fetched", HttpStatus.OK);
     }
     @PostMapping("match-commentary")
     @Override

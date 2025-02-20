@@ -2,6 +2,7 @@ package com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.map
 
 import com.jabulani.ligiopen.model.aws.dto.FileDto;
 import com.jabulani.ligiopen.model.aws.dto.mapper.FileMapper;
+import com.jabulani.ligiopen.model.match.entity.MatchFixture;
 import com.jabulani.ligiopen.model.match.entity.MatchLocation;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.mapper.MatchFixtureDtoMapper;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationDto;
@@ -45,7 +46,7 @@ public class MatchLocationDtoMapper {
                 .county(matchLocation.getCounty())
                 .town(matchLocation.getTown())
                 .photos(files)
-                .matchFixtures(matchLocation.getMatchFixtures().stream().map(matchFixtureDtoMapper::matchFixtureDto).collect(Collectors.toList()))
+                .matchFixturesIds(matchLocation.getMatchFixtures().stream().map(MatchFixture::getId).collect(Collectors.toList()))
                 .build();
     }
 }

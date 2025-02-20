@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.dao.match;
 
+import com.jabulani.ligiopen.model.match.MatchStatus;
 import com.jabulani.ligiopen.model.match.entity.MatchCommentary;
 import com.jabulani.ligiopen.model.match.entity.MatchFixture;
 import com.jabulani.ligiopen.model.match.entity.MatchLocation;
@@ -7,6 +8,9 @@ import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
 import com.jabulani.ligiopen.model.match.entity.events.MatchEvent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -65,10 +69,19 @@ public class MatchDaoImpl implements MatchDao{
     }
 
     @Override
-    public List<MatchFixture> getMatchFixtures() {
-        TypedQuery<MatchFixture> query = entityManager.createQuery("from MatchFixture", MatchFixture.class);
+    public List<MatchFixture> getMatchFixtures(String status) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<MatchFixture> cq = cb.createQuery(MatchFixture.class);
+        Root<MatchFixture> root = cq.from(MatchFixture.class);
+
+        if (status != null && !status.isEmpty()) {
+            cq.where(cb.equal(root.get("status"), MatchStatus.valueOf(status.toUpperCase())));
+        }
+
+        TypedQuery<MatchFixture> query = entityManager.createQuery(cq);
         return query.getResultList();
     }
+
 
     @Override
     public MatchEvent createMatchEvent(MatchEvent matchEvent) {

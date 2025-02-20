@@ -222,7 +222,6 @@ public class MatchEventsDtoMapper {
         halfTimeEventDto.setMatchEventType(halfTimeEvent.getMatchEventType());
         halfTimeEventDto.setMainPlayerId(playerId);
         halfTimeEventDto.setFiles(files);
-        halfTimeEventDto.setMatchEventType(halfTimeEvent.getMatchEventType());
 
         return halfTimeEventDto;
     }
@@ -248,7 +247,6 @@ public class MatchEventsDtoMapper {
         goalKickEventDto.setMatchEventType(goalKickEvent.getMatchEventType());
         goalKickEventDto.setMainPlayerId(playerId);
         goalKickEventDto.setFiles(files);
-        goalKickEventDto.setMatchEventType(goalKickEvent.getMatchEventType());
 
         return goalKickEventDto;
     }

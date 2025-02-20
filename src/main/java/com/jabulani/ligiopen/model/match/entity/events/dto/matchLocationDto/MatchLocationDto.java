@@ -19,5 +19,5 @@ public class MatchLocationDto {
     private String county;
     private String town;
     private List<FileDto> photos;
-    private List<MatchFixtureDto> matchFixtures;
+    private List<Integer> matchFixturesIds;
 }
