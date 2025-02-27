@@ -417,6 +417,17 @@ public class MatchServiceImpl implements MatchService{
                 matchEvent = kickOffEvent;
             }
 
+            case HALF_TIME -> {
+                HalfTimeEvent halfTimeEvent = new HalfTimeEvent();
+                halfTimeEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
+                halfTimeEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
+                halfTimeEvent.setMinute(matchCommentaryCreationDto.getMinute());
+                halfTimeEvent.setCreatedAt(LocalDateTime.now());
+                halfTimeEvent.setPlayer(mainPlayer);
+                halfTimeEvent.setMatchEventType(MatchEventType.HALF_TIME);
+                matchEvent = halfTimeEvent;
+            }
+
             case FULL_TIME -> {
                 FullTimeEvent fullTimeEvent = new FullTimeEvent();
                 fullTimeEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
