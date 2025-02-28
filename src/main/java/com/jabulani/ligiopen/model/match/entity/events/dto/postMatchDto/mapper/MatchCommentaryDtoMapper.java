@@ -2,6 +2,10 @@ package com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper;
 
 import com.jabulani.ligiopen.model.aws.dto.FileDto;
 import com.jabulani.ligiopen.model.aws.dto.mapper.FileMapper;
+import com.jabulani.ligiopen.model.club.dto.PlayerDto;
+import com.jabulani.ligiopen.model.club.dto.mapper.ClubMapper;
+import com.jabulani.ligiopen.model.club.dto.mapper.PlayerMapper;
+import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.match.entity.MatchCommentary;
 import com.jabulani.ligiopen.model.match.entity.events.*;
 import com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto.*;
@@ -19,20 +23,30 @@ public class MatchCommentaryDtoMapper {
     private final String BUCKET_NAME = "ligiopen";
     private final MatchEventsDtoMapper matchEventsDtoMapper;
     private final FileMapper fileMapper;
+    private final PlayerMapper playerMapper;
+    private final ClubMapper clubMapper;
     private final AwsService awsService;
     @Autowired
     public MatchCommentaryDtoMapper(
             MatchEventsDtoMapper matchEventsDtoMapper,
             FileMapper fileMapper,
-            AwsService awsService
+            AwsService awsService,
+            PlayerMapper playerMapper,
+            ClubMapper clubMapper
     ) {
         this.matchEventsDtoMapper = matchEventsDtoMapper;
         this.fileMapper = fileMapper;
         this.awsService = awsService;
+        this.playerMapper = playerMapper;
+        this.clubMapper = clubMapper;
     }
     public MatchCommentaryDto matchCommentaryDto(MatchCommentary matchCommentary) {
         MatchEventDto matchEventDto;
         List<FileDto> files = new ArrayList<>();
+
+        Player secondaryPlayer;
+
+        PlayerDto secondaryPlayerDto = null;
 
         if (matchCommentary.getFiles() != null && !matchCommentary.getFiles().isEmpty()) {
             files.addAll(matchCommentary.getFiles().stream()
@@ -58,6 +72,28 @@ public class MatchCommentaryDtoMapper {
             default -> null;
         };
 
+        secondaryPlayer = switch (matchCommentary.getMatchEvent().getMatchEventType()) {
+
+            case GOAL -> {
+                GoalEvent goalEvent = (GoalEvent) matchCommentary.getMatchEvent();
+                yield goalEvent.getAssistingPlayer();
+            }
+            case OWN_GOAL, YELLOW_CARD, RED_CARD, OFFSIDE, CORNER_KICK, FREE_KICK, PENALTY, PENALTY_MISSED, INJURY, THROW_IN, GOAL_KICK, KICK_OFF, HALF_TIME, FULL_TIME -> null;
+            case SUBSTITUTION -> {
+                SubstitutionEvent substitutionEvent = (SubstitutionEvent) matchCommentary.getMatchEvent();
+                yield substitutionEvent.getSubbedOutPlayer();
+            }
+            case FOUL -> {
+                FoulEvent foulEvent = (FoulEvent) matchCommentary.getMatchEvent();
+                yield foulEvent.getFouledPlayer();
+            }
+        };
+
+        if(secondaryPlayer != null) {
+            secondaryPlayerDto = playerMapper.playerDto(secondaryPlayer);
+        }
+
+
         return MatchCommentaryDto.builder()
                 .matchCommentaryId(matchCommentary.getId())
                 .postMatchAnalysisId(matchCommentary.getPostMatchAnalysis() != null ? matchCommentary.getPostMatchAnalysis().getId() : null)
@@ -68,6 +104,12 @@ public class MatchCommentaryDtoMapper {
                 .archived(matchCommentary.getArchived())
                 .archivedAt(matchCommentary.getArchivedAt())
                 .matchEventType(matchCommentary.getMatchEvent().getMatchEventType())
+                .mainPlayer(matchCommentary.getMatchEvent().getPlayer() != null ? playerMapper.playerDto(matchCommentary.getMatchEvent().getPlayer()) : null)
+                .secondaryPlayer(secondaryPlayerDto)
+                .homeClub(clubMapper.clubDetailsDto(matchCommentary.getPostMatchAnalysis().getMatchFixture().getHomeClub()))
+                .awayClub(clubMapper.clubDetailsDto(matchCommentary.getPostMatchAnalysis().getMatchFixture().getAwayClub()))
+                .homeClubScore(matchCommentary.getPostMatchAnalysis().getHomeClubScore())
+                .awayClubScore(matchCommentary.getPostMatchAnalysis().getAwayClubScore())
                 .cornerEvent(matchEventDto instanceof CornerKickEventDto ? (CornerKickEventDto) matchEventDto : null)
                 .foulEvent(matchEventDto instanceof FoulEventDto ? (FoulEventDto) matchEventDto : null)
                 .freeKickEvent(matchEventDto instanceof FreeKickEventDto ? (FreeKickEventDto) matchEventDto : null)

@@ -222,6 +222,8 @@ public class MatchEventsDtoMapper {
         halfTimeEventDto.setMatchEventType(halfTimeEvent.getMatchEventType());
         halfTimeEventDto.setMainPlayerId(playerId);
         halfTimeEventDto.setFiles(files);
+        halfTimeEventDto.setHomeClubScore(halfTimeEvent.getHomeClubScore());
+        halfTimeEventDto.setAwayClubScore(halfTimeEventDto.getAwayClubScore());
 
         return halfTimeEventDto;
     }

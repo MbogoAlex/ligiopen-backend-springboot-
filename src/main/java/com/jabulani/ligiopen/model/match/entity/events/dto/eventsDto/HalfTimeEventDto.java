@@ -7,4 +7,6 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 @NoArgsConstructor
 public class HalfTimeEventDto extends MatchEventDto{
+    private Integer awayClubScore;
+    private Integer homeClubScore;
 }

@@ -14,4 +14,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "half_time_event")
 public class HalfTimeEvent extends MatchEvent {
+    private Integer homeClubScore;
+    private Integer awayClubScore;
 }

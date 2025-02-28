@@ -1,6 +1,8 @@
 package com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto;
 
 import com.jabulani.ligiopen.model.aws.dto.FileDto;
+import com.jabulani.ligiopen.model.club.dto.ClubDetailsDto;
+import com.jabulani.ligiopen.model.club.dto.PlayerDto;
 import com.jabulani.ligiopen.model.match.MatchEventType;
 import com.jabulani.ligiopen.model.match.entity.events.dto.eventsDto.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,12 @@ public class MatchCommentaryDto {
     private Boolean archived;
     private LocalDateTime archivedAt;
     private MatchEventType matchEventType;
+    private PlayerDto mainPlayer;
+    private PlayerDto secondaryPlayer;
+    private ClubDetailsDto homeClub;
+    private ClubDetailsDto awayClub;
+    private Integer homeClubScore;
+    private Integer awayClubScore;
     private CornerKickEventDto cornerEvent;
     private FoulEventDto foulEvent;
     private FreeKickEventDto freeKickEvent;
@@ -32,6 +40,7 @@ public class MatchCommentaryDto {
     private HalfTimeEventDto halfTimeEvent;
     private GoalEventDto goalEvent;
     private GoalKickEventDto goalKickEvent;
+    private OwnGoalEventDto ownGoalEvent;
     private InjuryEventDto injuryEvent;
     private KickOffEventDto kickOffEvent;
     private OffsideEventDto offsideEvent;

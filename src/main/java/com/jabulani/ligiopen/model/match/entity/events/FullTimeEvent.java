@@ -12,4 +12,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "full_time_event")
 public class FullTimeEvent extends MatchEvent {
+    private Integer homeClubScore;
+    private Integer awayClubScore;
 }

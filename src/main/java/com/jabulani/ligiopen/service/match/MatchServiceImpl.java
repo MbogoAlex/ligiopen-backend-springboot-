@@ -11,6 +11,7 @@ import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.club.entity.PlayerClub;
 import com.jabulani.ligiopen.model.match.MatchEventType;
 import com.jabulani.ligiopen.model.match.MatchStatus;
+import com.jabulani.ligiopen.model.match.PlayerState;
 import com.jabulani.ligiopen.model.match.entity.MatchCommentary;
 import com.jabulani.ligiopen.model.match.entity.MatchFixture;
 import com.jabulani.ligiopen.model.match.entity.MatchLocation;
@@ -325,6 +326,8 @@ public class MatchServiceImpl implements MatchService{
             }
 
             case SUBSTITUTION -> {
+                mainPlayer.setPlayerState(PlayerState.ACTIVE);
+                secondaryPlayer.setPlayerState(PlayerState.BENCH);
                 SubstitutionEvent substitutionEvent = new SubstitutionEvent();
                 substitutionEvent.setTitle(matchCommentaryCreationDto.getMatchEvent().getTitle());
                 substitutionEvent.setSummary(matchCommentaryCreationDto.getMatchEvent().getSummary());
@@ -425,6 +428,8 @@ public class MatchServiceImpl implements MatchService{
                 halfTimeEvent.setCreatedAt(LocalDateTime.now());
                 halfTimeEvent.setPlayer(mainPlayer);
                 halfTimeEvent.setMatchEventType(MatchEventType.HALF_TIME);
+                halfTimeEvent.setHomeClubScore(postMatchAnalysis.getHomeClubScore());
+                halfTimeEvent.setAwayClubScore(postMatchAnalysis.getAwayClubScore());
                 matchEvent = halfTimeEvent;
             }
 
@@ -436,6 +441,8 @@ public class MatchServiceImpl implements MatchService{
                 fullTimeEvent.setCreatedAt(LocalDateTime.now());
                 fullTimeEvent.setPlayer(mainPlayer);
                 fullTimeEvent.setMatchEventType(MatchEventType.FULL_TIME);
+                fullTimeEvent.setHomeClubScore(postMatchAnalysis.getHomeClubScore());
+                fullTimeEvent.setAwayClubScore(postMatchAnalysis.getAwayClubScore());
                 matchEvent = fullTimeEvent;
             }
 
