@@ -20,6 +20,8 @@ public class MatchFixtureDtoMapper {
                 .postMatchAnalysisId(matchFixture.getPostMatchAnalysis().getId())
                 .homeClub(clubMapper.clubDetailsDto(matchFixture.getHomeClub()))
                 .awayClub(clubMapper.clubDetailsDto(matchFixture.getAwayClub()))
+                .homeClubScore(matchFixture.getPostMatchAnalysis().getHomeClubScore())
+                .awayClubScore(matchFixture.getPostMatchAnalysis().getAwayClubScore())
                 .createdAt(matchFixture.getCreatedAt())
                 .matchDateTime(matchFixture.getMatchDateTime())
                 .matchStatus(matchFixture.getStatus())

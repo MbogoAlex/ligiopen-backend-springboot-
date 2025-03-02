@@ -250,6 +250,7 @@ public class MatchServiceImpl implements MatchService{
     public MatchCommentaryDto createMatchCommentary(MatchCommentaryCreationDto matchCommentaryCreationDto) {
 
         PostMatchAnalysis postMatchAnalysis = matchDao.getPostMatchAnalysisById(matchCommentaryCreationDto.getPostMatchAnalysisId());
+        MatchFixture matchFixture = postMatchAnalysis.getMatchFixture();
 
         Club awayClub = postMatchAnalysis.getMatchFixture().getAwayClub();
         Club homeClub = postMatchAnalysis.getMatchFixture().getHomeClub();
@@ -426,6 +427,12 @@ public class MatchServiceImpl implements MatchService{
                 kickOffEvent.setCreatedAt(LocalDateTime.now());
                 kickOffEvent.setPlayer(mainPlayer);
                 kickOffEvent.setMatchEventType(MatchEventType.KICK_OFF);
+                if(matchFixture.getStatus().equals(MatchStatus.PENDING)) {
+                    postMatchAnalysis.getMatchFixture().setStatus(MatchStatus.PENDING);
+                } else if(matchFixture.getStatus().equals(MatchStatus.HALF_TIME)) {
+                    postMatchAnalysis.getMatchFixture().setStatus(MatchStatus.SECOND_HALF);
+                }
+                matchDao.updateMatchFixture(matchFixture);
                 matchEvent = kickOffEvent;
             }
 
@@ -439,6 +446,8 @@ public class MatchServiceImpl implements MatchService{
                 halfTimeEvent.setMatchEventType(MatchEventType.HALF_TIME);
                 halfTimeEvent.setHomeClubScore(postMatchAnalysis.getHomeClubScore());
                 halfTimeEvent.setAwayClubScore(postMatchAnalysis.getAwayClubScore());
+                postMatchAnalysis.getMatchFixture().setStatus(MatchStatus.HALF_TIME);
+                matchDao.updateMatchFixture(matchFixture);
                 matchEvent = halfTimeEvent;
             }
 
@@ -452,6 +461,10 @@ public class MatchServiceImpl implements MatchService{
                 fullTimeEvent.setMatchEventType(MatchEventType.FULL_TIME);
                 fullTimeEvent.setHomeClubScore(postMatchAnalysis.getHomeClubScore());
                 fullTimeEvent.setAwayClubScore(postMatchAnalysis.getAwayClubScore());
+                postMatchAnalysis.getMatchFixture().setStatus(MatchStatus.COMPLETED);
+//                matchFixture.setStatus(MatchStatus.COMPLETED);
+                matchDao.updateMatchFixture(matchFixture);
+
                 matchEvent = fullTimeEvent;
             }
 

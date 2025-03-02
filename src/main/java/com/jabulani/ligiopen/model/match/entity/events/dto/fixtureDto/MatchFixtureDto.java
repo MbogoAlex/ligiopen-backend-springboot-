@@ -19,6 +19,8 @@ public class MatchFixtureDto {
     private Integer postMatchAnalysisId;
     private ClubDetailsDto homeClub;
     private ClubDetailsDto awayClub;
+    private Integer homeClubScore;
+    private Integer awayClubScore;
     private LocalDateTime createdAt;
     private LocalDateTime matchDateTime;
     private MatchStatus matchStatus;

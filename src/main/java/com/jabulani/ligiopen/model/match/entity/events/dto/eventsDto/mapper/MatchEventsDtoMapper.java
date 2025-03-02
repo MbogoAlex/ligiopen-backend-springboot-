@@ -122,6 +122,8 @@ public class MatchEventsDtoMapper {
         fullTimeEventDto.setMatchEventType(fullTimeEvent.getMatchEventType());
         fullTimeEventDto.setMainPlayerId(fullTimeEvent.getPlayer() != null ? fullTimeEvent.getPlayer().getId() : null);
         fullTimeEventDto.setFiles(files);
+        fullTimeEventDto.setHomeClubScore(fullTimeEvent.getHomeClubScore());
+        fullTimeEventDto.setAwayClubScore(fullTimeEvent.getAwayClubScore());
 
         return fullTimeEventDto;
     }
