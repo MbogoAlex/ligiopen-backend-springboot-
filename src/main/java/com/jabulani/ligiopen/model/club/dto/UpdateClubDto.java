@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class UpdateClubDto {
     private Integer clubId;
     private String name;
+    private String clubAbbreviation;
     private String description;
     private String country;
     private String county;

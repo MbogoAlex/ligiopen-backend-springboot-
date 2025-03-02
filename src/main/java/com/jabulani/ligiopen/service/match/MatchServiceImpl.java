@@ -19,6 +19,7 @@ import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
 import com.jabulani.ligiopen.model.match.entity.events.*;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureDto;
+import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.mapper.MatchFixtureDtoMapper;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationCreationDto;
@@ -206,6 +207,14 @@ public class MatchServiceImpl implements MatchService{
 
         return matchFixtureDtoMapper.matchFixtureDto(matchDao.updateMatchFixture(matchFixture));
     }
+    @Transactional
+    @Override
+    public MatchFixtureDto updateMatchFixtureStatus(MatchFixtureStatusUpdateDto matchFixtureStatusUpdateDto) {
+        MatchFixture matchFixture = matchDao.getMatchFixtureById(matchFixtureStatusUpdateDto.getMatchFixtureId());
+        matchFixture.setStatus(matchFixtureStatusUpdateDto.getMatchStatus());
+        return matchFixtureDtoMapper.matchFixtureDto(matchDao.updateMatchFixture(matchFixture));
+    }
+
     @Transactional
     @Override
     public MatchFixtureDto uploadMatchFixtureFiles(Integer fixtureId, MultipartFile[] files) throws IOException {

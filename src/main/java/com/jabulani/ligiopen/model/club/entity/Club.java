@@ -26,6 +26,9 @@ public class Club {
     @Column(unique = true)
     private String name;
 
+    @Column(unique = true, name = "club_abbreviation")
+    private String clubAbbreviation;
+
     private String description;
 
     private String country;

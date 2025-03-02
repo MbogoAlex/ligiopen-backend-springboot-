@@ -58,6 +58,7 @@ public class ClubServiceImpl implements ClubService{
 
         Club club = Club.builder()
                 .name(addClubDto.getName())
+                .clubAbbreviation(addClubDto.getClubAbbreviation())
                 .description(addClubDto.getDescription())
                 .country(addClubDto.getCountry())
                 .county(addClubDto.getCounty())
@@ -102,6 +103,10 @@ public class ClubServiceImpl implements ClubService{
 
         if(!Objects.equals(club.getTown(), updateClubDto.getTown())) {
             club.setTown(updateClubDto.getTown());
+        }
+
+        if(!Objects.equals(club.getClubAbbreviation(), updateClubDto.getClubAbbreviation())) {
+            club.setClubAbbreviation(updateClubDto.getClubAbbreviation());
         }
 
         return clubMapper.clubDetailsDto(clubDao.updateClub(club));

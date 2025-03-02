@@ -66,6 +66,7 @@ public class ClubMapper {
                 .clubLogo(clubLogo)
                 .clubMainPhoto(clubMainPhoto)
                 .name(club.getName())
+                .clubAbbreviation(club.getClubAbbreviation())
                 .description(club.getDescription())
                 .startedOn(club.getStartedOn())
                 .country(club.getCountry())

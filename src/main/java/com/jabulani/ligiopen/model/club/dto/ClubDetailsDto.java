@@ -19,6 +19,7 @@ public class ClubDetailsDto {
     private FileDto clubLogo;
     private FileDto clubMainPhoto;
     private String name;
+    private String clubAbbreviation;
     private String description;
     private String country;
     private String county;

@@ -2,6 +2,7 @@ package com.jabulani.ligiopen.service.match;
 
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureDto;
+import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationDto;
@@ -25,6 +26,7 @@ public interface MatchService {
     List<MatchLocationDto> getAllMatchLocations();
     MatchFixtureDto createMatchFixture(MatchFixtureCreationDto matchFixtureCreationDto);
     MatchFixtureDto updateMatchFixture(MatchFixtureUpdateDto matchFixtureUpdateDto);
+    MatchFixtureDto updateMatchFixtureStatus(MatchFixtureStatusUpdateDto matchFixtureStatusUpdateDto);
 
     MatchFixtureDto uploadMatchFixtureFiles(Integer fixtureId, MultipartFile[] files) throws IOException;
     MatchFixtureDto removeMatchFixtureFile(Integer fixtureId, Integer fileId);

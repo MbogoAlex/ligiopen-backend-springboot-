@@ -2,6 +2,7 @@ package com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper;
 
 import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
+import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.mapper.MatchLocationDtoMapper;
 import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.PostMatchAnalysisDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

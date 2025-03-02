@@ -3,6 +3,7 @@ package com.jabulani.ligiopen.controller.match;
 import com.jabulani.ligiopen.config.response.BuildResponse;
 import com.jabulani.ligiopen.config.response.Response;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureCreationDto;
+import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationUpdateDto;
@@ -92,6 +93,14 @@ public class MatchControllerImpl implements MatchController{
     ) {
         return buildResponse.createResponse("match", matchService.updateMatchFixture(matchFixtureUpdateDto), "Match fixture updated", HttpStatus.OK);
     }
+    @PutMapping("match-fixture/status")
+    @Override
+    public ResponseEntity<Response> updateMatchFixtureStatus(
+            @RequestBody MatchFixtureStatusUpdateDto matchFixtureStatusUpdateDto
+    ) {
+        return buildResponse.createResponse("match", matchService.updateMatchFixtureStatus(matchFixtureStatusUpdateDto), "Match fixture updated", HttpStatus.OK);
+    }
+
     @PutMapping("match-fixture/file-remove/{fixtureId}/{fileId}")
     @Override
     public ResponseEntity<Response> removeMatchFixtureFile(

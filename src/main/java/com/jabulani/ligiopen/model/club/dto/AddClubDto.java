@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class AddClubDto {
     private String name;
+    private String clubAbbreviation;
     private String description;
     private LocalDate startedOn;
     private String country;

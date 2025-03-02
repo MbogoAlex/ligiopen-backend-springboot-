@@ -3,6 +3,7 @@ package com.jabulani.ligiopen.controller.match;
 import com.jabulani.ligiopen.config.response.Response;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureDto;
+import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationCreationDto;
 import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationDto;
@@ -26,6 +27,7 @@ public interface MatchController {
     ResponseEntity<Response> getAllMatchLocations();
     ResponseEntity<Response> createMatchFixture(MatchFixtureCreationDto matchFixtureCreationDto);
     ResponseEntity<Response> updateMatchFixture(MatchFixtureUpdateDto matchFixtureUpdateDto);
+    ResponseEntity<Response> updateMatchFixtureStatus(MatchFixtureStatusUpdateDto matchFixtureStatusUpdateDto);
 
     ResponseEntity<Response> removeMatchFixtureFile(Integer fixtureId, Integer fileId);
 
