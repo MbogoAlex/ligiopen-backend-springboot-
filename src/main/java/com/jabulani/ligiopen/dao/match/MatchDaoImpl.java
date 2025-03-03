@@ -10,10 +10,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -69,18 +71,32 @@ public class MatchDaoImpl implements MatchDao{
     }
 
     @Override
-    public List<MatchFixture> getMatchFixtures(String status) {
+    public List<MatchFixture> getMatchFixtures(String status, Integer clubId) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MatchFixture> cq = cb.createQuery(MatchFixture.class);
         Root<MatchFixture> root = cq.from(MatchFixture.class);
 
+        List<Predicate> predicates = new ArrayList<>();
+
+        // Filter by status if provided
         if (status != null && !status.isEmpty()) {
-            cq.where(cb.equal(root.get("status"), MatchStatus.valueOf(status.toUpperCase())));
+            predicates.add(cb.equal(root.get("status"), MatchStatus.valueOf(status.toUpperCase())));
         }
+
+        // Filter by clubId if provided (homeClub OR awayClub)
+        if (clubId != null) {
+            Predicate homeClubPredicate = cb.equal(root.get("homeClub").get("id"), clubId);
+            Predicate awayClubPredicate = cb.equal(root.get("awayClub").get("id"), clubId);
+            predicates.add(cb.or(homeClubPredicate, awayClubPredicate));
+        }
+
+        // Apply all predicates
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
 
         TypedQuery<MatchFixture> query = entityManager.createQuery(cq);
         return query.getResultList();
     }
+
 
 
     @Override

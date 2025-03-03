@@ -32,7 +32,7 @@ public interface MatchController {
     ResponseEntity<Response> removeMatchFixtureFile(Integer fixtureId, Integer fileId);
 
     ResponseEntity<Response> getMatchFixtureById(Integer id);
-    ResponseEntity<Response> getAllMatchFixtures(String status);
+    ResponseEntity<Response> getAllMatchFixtures(String status, Integer clubId);
     ResponseEntity<Response> createMatchCommentary(MatchCommentaryCreationDto matchCommentaryCreationDto);
     ResponseEntity<Response> updateMatchCommentary(MatchCommentaryUpdateDto matchCommentaryUpdateDto);
     ResponseEntity<Response> uploadEventFiles(Integer commentaryId, MultipartFile[] files) throws IOException;

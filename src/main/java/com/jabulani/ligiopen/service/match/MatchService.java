@@ -32,7 +32,7 @@ public interface MatchService {
     MatchFixtureDto removeMatchFixtureFile(Integer fixtureId, Integer fileId);
 
     MatchFixtureDto getMatchFixtureById(Integer id);
-    List<MatchFixtureDto> getAllMatchFixtures(String status);
+    List<MatchFixtureDto> getAllMatchFixtures(String status, Integer clubId);
     MatchCommentaryDto createMatchCommentary(MatchCommentaryCreationDto matchCommentaryCreationDto);
 
 

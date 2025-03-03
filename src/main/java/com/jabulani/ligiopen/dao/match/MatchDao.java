@@ -16,7 +16,7 @@ public interface MatchDao {
     MatchFixture createMatchFixture(MatchFixture matchFixture);
     MatchFixture updateMatchFixture(MatchFixture matchFixture);
     MatchFixture getMatchFixtureById(Integer id);
-    List<MatchFixture> getMatchFixtures(String status);
+    List<MatchFixture> getMatchFixtures(String status, Integer clubId);
 
     MatchEvent createMatchEvent(MatchEvent matchEvent);
     MatchEvent updateMatchEvent(MatchEvent matchEvent);

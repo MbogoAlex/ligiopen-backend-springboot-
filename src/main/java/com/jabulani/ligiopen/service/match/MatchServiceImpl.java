@@ -242,8 +242,8 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public List<MatchFixtureDto> getAllMatchFixtures(String status) {
-        return matchDao.getMatchFixtures(status).stream().map(matchFixtureDtoMapper::matchFixtureDto).collect(Collectors.toList());
+    public List<MatchFixtureDto> getAllMatchFixtures(String status, Integer clubId) {
+        return matchDao.getMatchFixtures(status, clubId).stream().map(matchFixtureDtoMapper::matchFixtureDto).collect(Collectors.toList());
     }
     @Transactional
     @Override
