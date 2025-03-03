@@ -121,6 +121,7 @@ public class MatchCommentaryDtoMapper {
                 .kickOffEvent(matchEventDto instanceof KickOffEventDto ? (KickOffEventDto) matchEventDto : null)
                 .offsideEvent(matchEventDto instanceof OffsideEventDto ? (OffsideEventDto) matchEventDto : null)
                 .penaltyEvent(matchEventDto instanceof PenaltyEventDto ? (PenaltyEventDto) matchEventDto : null)
+                .ownGoalEvent(matchEventDto instanceof OwnGoalEventDto ? (OwnGoalEventDto) matchEventDto : null)
                 .substitutionEvent(matchEventDto instanceof SubstitutionEventDto ? (SubstitutionEventDto) matchEventDto : null)
                 .throwInEvent(matchEventDto instanceof ThrowInEventDto ? (ThrowInEventDto) matchEventDto : null)
                 .build();

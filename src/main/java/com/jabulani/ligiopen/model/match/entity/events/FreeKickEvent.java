@@ -12,4 +12,5 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "free_kick_event")
 public class FreeKickEvent extends MatchEvent {
+    private Boolean isScored;
 }

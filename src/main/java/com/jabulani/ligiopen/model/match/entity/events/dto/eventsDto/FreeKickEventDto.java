@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 @NoArgsConstructor
 public class FreeKickEventDto extends MatchEventDto{
+    private Boolean isScored;
 }

@@ -96,6 +96,7 @@ public class MatchEventsDtoMapper {
         freeKickEventDto.setSummary(freeKickEvent.getSummary());
         freeKickEventDto.setMinute(freeKickEvent.getMinute());
         freeKickEventDto.setMatchEventType(freeKickEvent.getMatchEventType());
+        freeKickEventDto.setIsScored(freeKickEvent.getIsScored());
         freeKickEventDto.setMainPlayerId(freeKickEvent.getPlayer() != null ? freeKickEvent.getPlayer().getId() : null);
         freeKickEventDto.setFiles(files);
 

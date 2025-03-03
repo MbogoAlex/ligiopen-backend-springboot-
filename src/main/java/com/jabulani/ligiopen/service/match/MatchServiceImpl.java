@@ -381,6 +381,7 @@ public class MatchServiceImpl implements MatchService{
                 freeKickEvent.setMinute(matchCommentaryCreationDto.getMinute());
                 freeKickEvent.setCreatedAt(LocalDateTime.now());
                 freeKickEvent.setPlayer(mainPlayer);
+                freeKickEvent.setIsScored(matchCommentaryCreationDto.getMatchEvent().getIsScored());
                 freeKickEvent.setMatchEventType(MatchEventType.FREE_KICK);
                 matchEvent = freeKickEvent;
             }
