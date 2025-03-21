@@ -81,9 +81,7 @@ public class NewsControllerImpl implements NewsController{
             @RequestPart("data") NewsItemCreationDto newsItemCreationDto,
             @RequestPart("file") MultipartFile file
     ) throws IOException {
-        if(file == null) {
-            return buildResponse.createResponse("null", null, "file cannot be null", HttpStatus.BAD_REQUEST);
-        }
+
         return buildResponse.createResponse("news item", newsService.createNewsItem(newsItemCreationDto, file), "News item created", HttpStatus.CREATED);
     }
     @GetMapping("news-item/{newsId}")

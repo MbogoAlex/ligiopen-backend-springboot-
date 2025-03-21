@@ -127,9 +127,14 @@ public class NewsServiceImpl implements NewsService{
     @Transactional
     @Override
     public NewsItemDto createNewsItem(NewsItemCreationDto newsItemCreationDto, MultipartFile file) throws IOException {
-        File newsItemFile = File.builder()
-                .name(awsService.uploadFile(Constants.BUCKET_NAME, file))
-                .build();
+
+        File newsItemFile = null;
+
+        if(file != null) {
+            newsItemFile = File.builder()
+                    .name(awsService.uploadFile(Constants.BUCKET_NAME, file))
+                    .build();
+        }
 
         News news = newsDao.getNewsById(newsItemCreationDto.getNewsId());
 
