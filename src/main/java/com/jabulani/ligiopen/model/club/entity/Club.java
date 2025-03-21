@@ -2,6 +2,7 @@ package com.jabulani.ligiopen.model.club.entity;
 
 import com.jabulani.ligiopen.model.aws.File;
 import com.jabulani.ligiopen.model.match.entity.MatchFixture;
+import com.jabulani.ligiopen.model.news.News;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -64,4 +66,12 @@ public class Club {
 
     @OneToMany(mappedBy = "awayClub", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MatchFixture> awayFixtures;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "club_news",
+            joinColumns = @JoinColumn(name = "club_id"),
+            inverseJoinColumns = @JoinColumn(name = "news_id")
+    )
+    private List<News> news;
 }
