@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class MatchFixtureDto {
     private Integer matchFixtureId;
     private Integer matchLocationId;
+    private String matchLocation;
     private Integer postMatchAnalysisId;
     private ClubDetailsDto homeClub;
     private ClubDetailsDto awayClub;

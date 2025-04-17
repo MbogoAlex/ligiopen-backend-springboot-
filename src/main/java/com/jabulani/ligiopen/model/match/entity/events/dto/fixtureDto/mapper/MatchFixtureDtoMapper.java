@@ -17,6 +17,7 @@ public class MatchFixtureDtoMapper {
         return MatchFixtureDto.builder()
                 .matchFixtureId(matchFixture.getId())
                 .matchLocationId(matchFixture.getMatchLocation().getId())
+                .matchLocation(matchFixture.getMatchLocation().getVenueName())
                 .postMatchAnalysisId(matchFixture.getPostMatchAnalysis().getId())
                 .homeClub(clubMapper.clubDetailsDto(matchFixture.getHomeClub()))
                 .awayClub(clubMapper.clubDetailsDto(matchFixture.getAwayClub()))
