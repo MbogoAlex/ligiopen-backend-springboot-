@@ -15,7 +15,9 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -71,31 +73,56 @@ public class MatchDaoImpl implements MatchDao{
     }
 
     @Override
-    public List<MatchFixture> getMatchFixtures(String status, Integer clubId) {
+    public List<MatchFixture> getMatchFixtures(String status, List<Integer> clubIds, LocalDateTime matchDateTime) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MatchFixture> cq = cb.createQuery(MatchFixture.class);
         Root<MatchFixture> root = cq.from(MatchFixture.class);
 
         List<Predicate> predicates = new ArrayList<>();
 
-        // Filter by status if provided
+        // 1) Filter by status (with special handling for "LIVE")
         if (status != null && !status.isEmpty()) {
-            predicates.add(cb.equal(root.get("status"), MatchStatus.valueOf(status.toUpperCase())));
+            if ("LIVE".equalsIgnoreCase(status)) {
+                List<MatchStatus> liveStatuses = Arrays.asList(
+                        MatchStatus.FIRST_HALF,
+                        MatchStatus.HALF_TIME,
+                        MatchStatus.SECOND_HALF,
+                        MatchStatus.EXTRA_TIME_FIRST_HALF,
+                        MatchStatus.EXTRA_TIME_HALF_TIME,
+                        MatchStatus.EXTRA_TIME_SECOND_HALF,
+                        MatchStatus.PENALTY_SHOOTOUT
+                );
+                predicates.add(root.get("status").in(liveStatuses));
+            } else {
+                predicates.add(cb.equal(
+                        root.get("status"),
+                        MatchStatus.valueOf(status.toUpperCase())
+                ));
+            }
         }
 
-        // Filter by clubId if provided (homeClub OR awayClub)
-        if (clubId != null) {
-            Predicate homeClubPredicate = cb.equal(root.get("homeClub").get("id"), clubId);
-            Predicate awayClubPredicate = cb.equal(root.get("awayClub").get("id"), clubId);
-            predicates.add(cb.or(homeClubPredicate, awayClubPredicate));
+        // 2) Filter by any of the given club IDs (home OR away)
+        if (clubIds != null && !clubIds.isEmpty()) {
+            Predicate homeIn = root.get("homeClub").get("id").in(clubIds);
+            Predicate awayIn = root.get("awayClub").get("id").in(clubIds);
+            predicates.add(cb.or(homeIn, awayIn));
         }
 
-        // Apply all predicates
+        // 3) Filter by matchDateTime (e.g. upcoming from this timestamp)
+        if (matchDateTime != null) {
+            predicates.add(cb.greaterThanOrEqualTo(
+                    root.get("matchDateTime"),
+                    matchDateTime
+            ));
+        }
+
+        // Combine and execute
         cq.where(cb.and(predicates.toArray(new Predicate[0])));
-
+        cq.orderBy(cb.desc(root.get("matchDateTime")));
         TypedQuery<MatchFixture> query = entityManager.createQuery(cq);
         return query.getResultList();
     }
+
 
 
 

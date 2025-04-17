@@ -12,12 +12,16 @@ import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCom
 import com.jabulani.ligiopen.service.match.MatchService;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/")
@@ -120,9 +124,13 @@ public class MatchControllerImpl implements MatchController{
     @Override
     public ResponseEntity<Response> getAllMatchFixtures(
             @RequestParam(name = "status", required = false) String status,
-            @RequestParam(name = "clubId", required = false) Integer clubId
+            @RequestParam(name = "clubIds", required = false) List<Integer> clubIds,
+            @RequestParam(name = "matchDateTime", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate matchDateTime
     ) {
-        return buildResponse.createResponse("match", matchService.getAllMatchFixtures(status, clubId), "Match fixtures fetched", HttpStatus.OK);
+        LocalDateTime formattedMatchDateTime = matchDateTime != null ? matchDateTime.atStartOfDay() : null;
+
+        return buildResponse.createResponse("match", matchService.getAllMatchFixtures(status, clubIds, formattedMatchDateTime), "Match fixtures fetched", HttpStatus.OK);
     }
     @PostMapping("match-commentary")
     @Override

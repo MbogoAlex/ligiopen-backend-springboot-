@@ -6,6 +6,7 @@ import com.jabulani.ligiopen.model.match.entity.MatchLocation;
 import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
 import com.jabulani.ligiopen.model.match.entity.events.MatchEvent;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MatchDao {
@@ -16,7 +17,7 @@ public interface MatchDao {
     MatchFixture createMatchFixture(MatchFixture matchFixture);
     MatchFixture updateMatchFixture(MatchFixture matchFixture);
     MatchFixture getMatchFixtureById(Integer id);
-    List<MatchFixture> getMatchFixtures(String status, Integer clubId);
+    List<MatchFixture> getMatchFixtures(String status, List<Integer> clubIds, LocalDateTime matchDateTime);
 
     MatchEvent createMatchEvent(MatchEvent matchEvent);
     MatchEvent updateMatchEvent(MatchEvent matchEvent);

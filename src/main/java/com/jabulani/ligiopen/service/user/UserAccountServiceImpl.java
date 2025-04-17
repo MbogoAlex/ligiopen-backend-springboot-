@@ -37,7 +37,7 @@ public class UserAccountServiceImpl implements UserAccountService{
                 .username(userRegDetails.getUsername())
                 .email(userRegDetails.getEmail())
                 .password(passwordEncoder.encode(userRegDetails.getPassword()))
-                .role(Role.USER)
+                .role(userRegDetails.getRole())
                 .createdAt(LocalDateTime.now().plusHours(3))
                 .build();
         return userAccountMapper.toUserDto(userAccountDao.createUserAccount(userAccount));

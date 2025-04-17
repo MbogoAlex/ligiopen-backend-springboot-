@@ -14,6 +14,7 @@ import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.PostMatc
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MatchService {
@@ -32,7 +33,7 @@ public interface MatchService {
     MatchFixtureDto removeMatchFixtureFile(Integer fixtureId, Integer fileId);
 
     MatchFixtureDto getMatchFixtureById(Integer id);
-    List<MatchFixtureDto> getAllMatchFixtures(String status, Integer clubId);
+    List<MatchFixtureDto> getAllMatchFixtures(String status, List<Integer> clubIds, LocalDateTime matchDateTime);
     MatchCommentaryDto createMatchCommentary(MatchCommentaryCreationDto matchCommentaryCreationDto);
 
 
