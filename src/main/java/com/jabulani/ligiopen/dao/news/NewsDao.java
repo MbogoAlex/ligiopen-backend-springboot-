@@ -10,7 +10,7 @@ public interface NewsDao {
     News updateNews(News news);
     String deleteNews(Integer newsId);
     News getNewsById(Integer newsId);
-    List<News> getAllNews();
+    List<News> getAllNews(Integer clubId);
 
     NewsItem createNewsItem(NewsItem newsItem);
     NewsItem updateNewsItem(NewsItem newsItem);

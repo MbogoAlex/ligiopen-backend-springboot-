@@ -1,9 +1,11 @@
 package com.jabulani.ligiopen.dao.news;
 
+import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.news.News;
 import com.jabulani.ligiopen.model.news.NewsItem;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -42,8 +44,19 @@ public class NewsDaoImpl implements NewsDao{
     }
 
     @Override
-    public List<News> getAllNews() {
-        TypedQuery<News> query = entityManager.createQuery("from News", News.class);
+    public List<News> getAllNews(Integer clubId) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<News> cq = cb.createQuery(News.class);
+        Root<News> newsRoot = cq.from(News.class);
+
+        if (clubId != null) {
+            // Join with Club entity through the many-to-many relationship
+            Join<News, Club> clubJoin = newsRoot.join("clubs", JoinType.INNER);
+            cq.where(cb.equal(clubJoin.get("id"), clubId));
+        }
+
+        cq.select(newsRoot).distinct(true); // Add distinct to avoid duplicates
+        TypedQuery<News> query = entityManager.createQuery(cq);
         return query.getResultList();
     }
 

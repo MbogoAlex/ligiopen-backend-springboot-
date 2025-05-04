@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public class News {
     private String subTitle;
 
     private Boolean neutral;
+    private LocalDateTime publishedAt;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<NewsItem> newsItems;

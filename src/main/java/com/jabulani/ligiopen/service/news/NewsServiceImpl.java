@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,6 +59,7 @@ public class NewsServiceImpl implements NewsService{
                 .subTitle(newsCreationRequestDto.getSubTitle())
                 .coverPhoto(cover)
                 .neutral(true)
+                .publishedAt(LocalDateTime.now())
                 .build();
 
         // Persist News first
@@ -108,10 +110,11 @@ public class NewsServiceImpl implements NewsService{
     public NewsDto getNews(Integer newsId) {
         return newsMapper.newsDto(newsDao.getNewsById(newsId));
     }
+
     @Transactional
     @Override
-    public List<NewsDto> getAllNews() {
-        return newsDao.getAllNews().stream().map(newsMapper::newsDto).collect(Collectors.toList());
+    public List<NewsDto> getAllNews(Integer clubId) {
+        return newsDao.getAllNews(clubId).stream().map(newsMapper::newsDto).collect(Collectors.toList());
     }
 
     @Override

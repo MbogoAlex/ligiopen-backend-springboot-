@@ -13,7 +13,7 @@ public interface NewsController {
 //    NewsDto updateNews(NewsCreationRequestDto newsCreationRequestDto);
     ResponseEntity<Response> updateNewsCoverPhoto(Integer newsId, MultipartFile file) throws IOException;
     ResponseEntity<Response> getNews(Integer newsId);
-    ResponseEntity<Response> getAllNews();
+    ResponseEntity<Response> getAllNews(Integer clubId);
     ResponseEntity<Response> deleteNews(Integer newsId);
     ResponseEntity<Response> deleteNewsCoverPhoto(Integer fileId);
 
