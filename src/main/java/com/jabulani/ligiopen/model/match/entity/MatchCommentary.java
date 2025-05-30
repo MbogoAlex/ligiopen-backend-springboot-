@@ -39,6 +39,9 @@ public class MatchCommentary {
 
     private Boolean archived;
 
+    @Enumerated(EnumType.STRING)
+    private MatchCommentaryStatus matchCommentaryStatus;
+
     private LocalDateTime archivedAt;
 
     // Add relationship to MatchEvent

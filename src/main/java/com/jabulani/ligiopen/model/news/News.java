@@ -34,6 +34,9 @@ public class News {
     private Boolean neutral;
     private LocalDateTime publishedAt;
 
+    @Enumerated(EnumType.STRING)
+    private NewsStatus newsStatus;
+
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<NewsItem> newsItems;
 

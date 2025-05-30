@@ -1,13 +1,13 @@
 package com.jabulani.ligiopen.controller.match;
 
 import com.jabulani.ligiopen.config.response.Response;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureCreationDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureStatusUpdateDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureUpdateDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationCreationDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationUpdateDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryCreationDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureCreationDto;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureStatusUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocationCreationDto;
+import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocationUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.MatchCommentaryCreationDto;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.MatchCommentaryUpdateDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 

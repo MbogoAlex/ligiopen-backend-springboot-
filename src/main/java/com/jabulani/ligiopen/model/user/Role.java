@@ -1,7 +1,8 @@
 package com.jabulani.ligiopen.model.user;
 
 public enum Role {
-    ADMIN,
+    SUPER_ADMIN,
+    TEAM_ADMIN,
     MANAGER,
     COACH,
     PLAYER,

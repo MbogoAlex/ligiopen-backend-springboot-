@@ -1,9 +1,6 @@
 package com.jabulani.ligiopen.service.news;
 
-import com.jabulani.ligiopen.model.news.dto.NewsCreationRequestDto;
-import com.jabulani.ligiopen.model.news.dto.NewsDto;
-import com.jabulani.ligiopen.model.news.dto.NewsItemCreationDto;
-import com.jabulani.ligiopen.model.news.dto.NewsItemDto;
+import com.jabulani.ligiopen.model.news.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,5 +20,7 @@ public interface NewsService {
     NewsItemDto updateNewsItem(NewsItemCreationDto newsItemCreationDto);
 
     NewsItemDto getNewsItem(Integer newsItemId);
+
+    NewsDto updateNewsStatus(NewStatusUpdateDto newStatusUpdateDto);
 
 }

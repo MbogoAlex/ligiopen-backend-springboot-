@@ -5,33 +5,29 @@ import com.jabulani.ligiopen.dao.club.PlayerDao;
 import com.jabulani.ligiopen.dao.fileDao.FileDao;
 import com.jabulani.ligiopen.dao.match.MatchDao;
 import com.jabulani.ligiopen.model.aws.File;
-import com.jabulani.ligiopen.model.club.dto.PlayerDto;
 import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.club.entity.Player;
 import com.jabulani.ligiopen.model.club.entity.PlayerClub;
 import com.jabulani.ligiopen.model.match.MatchEventType;
 import com.jabulani.ligiopen.model.match.MatchStatus;
 import com.jabulani.ligiopen.model.match.PlayerState;
-import com.jabulani.ligiopen.model.match.entity.MatchCommentary;
-import com.jabulani.ligiopen.model.match.entity.MatchFixture;
-import com.jabulani.ligiopen.model.match.entity.MatchLocation;
-import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
+import com.jabulani.ligiopen.model.match.entity.*;
 import com.jabulani.ligiopen.model.match.entity.events.*;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureCreationDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureStatusUpdateDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.MatchFixtureUpdateDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.fixtureDto.mapper.MatchFixtureDtoMapper;
-import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationCreationDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.MatchLocationUpdateDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.matchLocationDto.mapper.MatchLocationDtoMapper;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryCreationDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.MatchCommentaryUpdateDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.PostMatchAnalysisDto;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper.MatchCommentaryDtoMapper;
-import com.jabulani.ligiopen.model.match.entity.events.dto.postMatchDto.mapper.PostMatchAnalysisDtoMapper;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureCreationDto;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureDto;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureStatusUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.mapper.MatchFixtureDtoMapper;
+import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocationCreationDto;
+import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocationDto;
+import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocationUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.mapper.MatchLocationDtoMapper;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.MatchCommentaryCreationDto;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.MatchCommentaryDto;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.MatchCommentaryUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.PostMatchAnalysisDto;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.mapper.MatchCommentaryDtoMapper;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.mapper.PostMatchAnalysisDtoMapper;
 import com.jabulani.ligiopen.service.aws.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,6 +145,11 @@ public class MatchServiceImpl implements MatchService{
     public MatchLocationDto getMatchLocationById(Integer locationId) {
 
         return matchLocationDtoMapper.matchLocationDto(matchDao.getMatchLocationById(locationId));
+    }
+
+    @Override
+    public MatchLocationDto getMatchLocationByName(String name) {
+        return matchLocationDtoMapper.matchLocationDto(matchDao.getMatchLocationByName(name));
     }
 
     @Override
@@ -487,6 +488,7 @@ public class MatchServiceImpl implements MatchService{
                 .createdAt(LocalDateTime.now())
                 .archived(false)
                 .matchEvent(matchEvent)
+                .matchCommentaryStatus(MatchCommentaryStatus.PENDING)
                 .minute(matchCommentaryCreationDto.getMinute())
                 .build();
 

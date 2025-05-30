@@ -13,11 +13,14 @@ public interface MatchDao {
     MatchLocation createMatchLocation(MatchLocation matchLocation);
     MatchLocation updateMatchLocation(MatchLocation matchLocation);
     MatchLocation getMatchLocationById(Integer id);
+    MatchLocation getMatchLocationByName(String name);
     List<MatchLocation> getMatchLocations();
     MatchFixture createMatchFixture(MatchFixture matchFixture);
     MatchFixture updateMatchFixture(MatchFixture matchFixture);
     MatchFixture getMatchFixtureById(Integer id);
     List<MatchFixture> getMatchFixtures(String status, List<Integer> clubIds, LocalDateTime matchDateTime);
+
+    Boolean matchLocationExists(String name);
 
     MatchEvent createMatchEvent(MatchEvent matchEvent);
     MatchEvent updateMatchEvent(MatchEvent matchEvent);

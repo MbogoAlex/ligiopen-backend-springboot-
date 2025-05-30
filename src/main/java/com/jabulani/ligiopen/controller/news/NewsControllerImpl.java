@@ -2,6 +2,7 @@ package com.jabulani.ligiopen.controller.news;
 
 import com.jabulani.ligiopen.config.response.BuildResponse;
 import com.jabulani.ligiopen.config.response.Response;
+import com.jabulani.ligiopen.model.news.dto.NewStatusUpdateDto;
 import com.jabulani.ligiopen.model.news.dto.NewsCreationRequestDto;
 import com.jabulani.ligiopen.model.news.dto.NewsItemCreationDto;
 import com.jabulani.ligiopen.service.news.NewsService;
@@ -90,5 +91,11 @@ public class NewsControllerImpl implements NewsController{
             @PathVariable("newsId") Integer newsItemId
     ) {
         return buildResponse.createResponse("news item", newsService.getNewsItem(newsItemId), "News item fetched", HttpStatus.OK);
+    }
+
+    @PutMapping("news/status-update")
+    @Override
+    public ResponseEntity<Response> updateNewsStatus(@RequestBody NewStatusUpdateDto newStatusUpdateDto) {
+        return buildResponse.createResponse("news", newsService.updateNewsStatus(newStatusUpdateDto), "News status updated", HttpStatus.OK);
     }
 }

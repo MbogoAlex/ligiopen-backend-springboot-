@@ -8,10 +8,8 @@ import com.jabulani.ligiopen.model.aws.File;
 import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.news.News;
 import com.jabulani.ligiopen.model.news.NewsItem;
-import com.jabulani.ligiopen.model.news.dto.NewsCreationRequestDto;
-import com.jabulani.ligiopen.model.news.dto.NewsDto;
-import com.jabulani.ligiopen.model.news.dto.NewsItemCreationDto;
-import com.jabulani.ligiopen.model.news.dto.NewsItemDto;
+import com.jabulani.ligiopen.model.news.NewsStatus;
+import com.jabulani.ligiopen.model.news.dto.*;
 import com.jabulani.ligiopen.model.news.dto.mapper.NewsMapper;
 import com.jabulani.ligiopen.service.aws.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +57,7 @@ public class NewsServiceImpl implements NewsService{
                 .subTitle(newsCreationRequestDto.getSubTitle())
                 .coverPhoto(cover)
                 .neutral(true)
+                .newsStatus(NewsStatus.PENDING)
                 .publishedAt(LocalDateTime.now())
                 .build();
 
@@ -160,5 +159,13 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public NewsItemDto getNewsItem(Integer newsItemId) {
         return newsMapper.newsItemDto(newsDao.getNewsItemById(newsItemId));
+    }
+
+    @Transactional
+    @Override
+    public NewsDto updateNewsStatus(NewStatusUpdateDto newStatusUpdateDto) {
+        News news = newsDao.getNewsById(newStatusUpdateDto.getNewsId());
+        news.setNewsStatus(newStatusUpdateDto.getNewsStatus());
+        return newsMapper.newsDto(newsDao.updateNews(news));
     }
 }

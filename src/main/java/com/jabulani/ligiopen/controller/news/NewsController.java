@@ -1,7 +1,9 @@
 package com.jabulani.ligiopen.controller.news;
 
 import com.jabulani.ligiopen.config.response.Response;
+import com.jabulani.ligiopen.model.news.dto.NewStatusUpdateDto;
 import com.jabulani.ligiopen.model.news.dto.NewsCreationRequestDto;
+import com.jabulani.ligiopen.model.news.dto.NewsDto;
 import com.jabulani.ligiopen.model.news.dto.NewsItemCreationDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,4 +23,6 @@ public interface NewsController {
 //    NewsItemDto updateNewsItem(NewsItemCreationDto newsItemCreationDto);
 
     ResponseEntity<Response> getNewsItem(Integer newsItemId);
+
+    ResponseEntity<Response> updateNewsStatus(NewStatusUpdateDto newStatusUpdateDto);
 }

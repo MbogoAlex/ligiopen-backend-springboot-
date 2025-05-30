@@ -34,6 +34,7 @@ public class NewsMapper {
                 .subTitle(news.getSubTitle())
                 .neutral(news.getNeutral())
                 .publishedAt(news.getPublishedAt())
+                .newsStatus(news.getNewsStatus())
                 .newsItems(newsItemList.stream().map(this::newsItemDto).collect(Collectors.toList()))
                 .clubs(news.getClubs().stream().map(Club::getId).collect(Collectors.toList()))
                 .build();

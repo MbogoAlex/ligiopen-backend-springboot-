@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.model.news.dto;
 
 import com.jabulani.ligiopen.model.aws.dto.FileDto;
+import com.jabulani.ligiopen.model.news.NewsStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class NewsDto {
     private String title;
     private String subTitle;
     private Boolean neutral;
+    private NewsStatus newsStatus;
     private LocalDateTime publishedAt;
     private List<NewsItemDto> newsItems;
     private List<Integer> clubs;

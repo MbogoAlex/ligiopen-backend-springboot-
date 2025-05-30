@@ -2,7 +2,7 @@ package com.jabulani.ligiopen.controller.club;
 
 import com.jabulani.ligiopen.config.response.BuildResponse;
 import com.jabulani.ligiopen.config.response.Response;
-import com.jabulani.ligiopen.model.club.dto.*;
+import com.jabulani.ligiopen.model.dto.*;
 import com.jabulani.ligiopen.service.club.ClubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +33,13 @@ public class ClubControllerImpl implements ClubController{
     ) throws IOException {
         return buildResponse.createResponse("club", clubService.addClub(addClubDto, logo), "Club added", HttpStatus.CREATED);
     }
+
+    @PostMapping("club/airtable/save")
+    @Override
+    public ResponseEntity<Response> addClubsFromAirtable() throws Exception {
+        return buildResponse.createResponse("club", clubService.addClubsFromAirtable(), "Club added", HttpStatus.CREATED);
+    }
+
     @PutMapping("club/details")
     @Override
     public ResponseEntity<Response> updateClubDetails(
@@ -74,9 +81,15 @@ public class ClubControllerImpl implements ClubController{
     }
     @GetMapping("club")
     @Override
-    public ResponseEntity<Response> getClubs() {
-        return buildResponse.createResponse("club", clubService.getClubs(), "Clubs fetched", HttpStatus.OK);
+    public ResponseEntity<Response> getClubs(
+            @RequestParam(value = "clubName", required = false) String clubName,
+            @RequestParam(value = "divisionId", required = false) Integer divisionId,
+            @RequestParam(value = "favorite", required = false) Boolean favorite,
+            @RequestParam(value = "userId") Integer userId
+    ) {
+        return buildResponse.createResponse("club", clubService.getClubs(clubName, divisionId, favorite, userId), "Clubs fetched", HttpStatus.OK);
     }
+
     @PostMapping("player")
     @Override
     public ResponseEntity<Response> addPlayer(
@@ -132,5 +145,22 @@ public class ClubControllerImpl implements ClubController{
     @Override
     public ResponseEntity<Response> getPlayers() {
         return buildResponse.createResponse("player", clubService.getPlayers(), "Players fetched", HttpStatus.OK);
+    }
+
+    @PutMapping("club/bookmark")
+    @Override
+    public ResponseEntity<Response> bookmarkClub(@RequestBody BookmarkClubDto bookmarkClubDto) {
+        try {
+            return buildResponse.createResponse("bookmark club", clubService.bookmarkClub(bookmarkClubDto), "Club bookmarked by the user", HttpStatus.OK);
+        } catch (Exception e) {
+            return buildResponse.createResponse("null", null, e.toString(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("club/favorite/{userId}")
+    @Override
+    public ResponseEntity<Response> getUserFavoriteClubs(@PathVariable("userId") Integer userId) {
+        return buildResponse.createResponse("favorite clubs", clubService.getUserFavoriteClubs(userId), "User favorites fetched", HttpStatus.OK);
     }
 }

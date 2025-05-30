@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.model.match.entity;
 
 import com.jabulani.ligiopen.model.aws.File;
+import com.jabulani.ligiopen.model.club.entity.Club;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,9 @@ public class MatchLocation {
     private String county;
 
     private String town;
+
+    @OneToMany(mappedBy = "home")  // One MatchLocation can have many Clubs
+    private List<Club> clubs;  // Changed from Club club to List<Club> clubs
 
     @OneToMany(mappedBy = "matchLocation", cascade = CascadeType.ALL)
     private List<File> locationPhotos;

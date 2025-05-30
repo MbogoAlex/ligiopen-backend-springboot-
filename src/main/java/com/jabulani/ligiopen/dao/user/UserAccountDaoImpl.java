@@ -29,7 +29,7 @@ public class UserAccountDaoImpl implements UserAccountDao{
 
     @Override
     public UserAccount getUserAccountById(Integer userId) {
-        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where userId = :userId", UserAccount.class);
+        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where id = :userId", UserAccount.class);
         query.setParameter("userId", userId);
         return query.getSingleResult();
     }

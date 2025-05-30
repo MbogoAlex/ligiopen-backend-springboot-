@@ -7,6 +7,7 @@ import com.jabulani.ligiopen.model.match.entity.MatchLocation;
 import com.jabulani.ligiopen.model.match.entity.PostMatchAnalysis;
 import com.jabulani.ligiopen.model.match.entity.events.MatchEvent;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -44,6 +45,13 @@ public class MatchDaoImpl implements MatchDao{
     public MatchLocation getMatchLocationById(Integer id) {
         TypedQuery<MatchLocation> query = entityManager.createQuery("from MatchLocation where id = :id", MatchLocation.class);
         query.setParameter("id", id);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public MatchLocation getMatchLocationByName(String name) {
+        TypedQuery<MatchLocation> query = entityManager.createQuery("from MatchLocation where venueName = :name", MatchLocation.class);
+        query.setParameter("name", name);
         return query.getSingleResult();
     }
 
@@ -123,7 +131,17 @@ public class MatchDaoImpl implements MatchDao{
         return query.getResultList();
     }
 
-
+    @Override
+    public Boolean matchLocationExists(String name) {
+        try {
+            TypedQuery<MatchLocation> query = entityManager.createQuery("from MatchLocation where venueName = :name", MatchLocation.class);
+            query.setParameter("name", name);
+            query.getSingleResult();
+            return true;
+        } catch (NoResultException e) {
+            return false;
+        }
+    }
 
 
     @Override

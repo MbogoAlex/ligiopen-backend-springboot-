@@ -2,7 +2,9 @@ package com.jabulani.ligiopen.model.club.entity;
 
 import com.jabulani.ligiopen.model.aws.File;
 import com.jabulani.ligiopen.model.match.entity.MatchFixture;
+import com.jabulani.ligiopen.model.match.entity.MatchLocation;
 import com.jabulani.ligiopen.model.news.News;
+import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +13,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -28,24 +30,34 @@ public class Club {
     @Column(unique = true)
     private String name;
 
-    @Column(unique = true, name = "club_abbreviation")
+    @Column(unique = false, name = "club_abbreviation")
     private String clubAbbreviation;
 
+    @ManyToOne
+    @JoinColumn(name = "home_location_id")
+    private MatchLocation home;
+
     private String description;
-
     private String country;
-
     private String county;
-
     private String town;
-
     private LocalDate startedOn;
-
     private LocalDateTime createdAt;
-
     private Boolean archived;
-
     private LocalDateTime archivedAt;
+
+    // Team Admin relationship (one-to-one as a club has one admin)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_admin_id")
+    private UserAccount teamAdmin;
+
+    // Managers relationship (one-to-many as a club can have multiple managers)
+    @OneToMany(mappedBy = "managedClub", fetch = FetchType.LAZY)
+    private List<UserAccount> managers;
+
+    // Coaches relationship (one-to-many as a club can have multiple coaches)
+    @OneToMany(mappedBy = "coachedClub", fetch = FetchType.LAZY)
+    private List<UserAccount> coaches;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlayerClub> playerClubs;
@@ -74,4 +86,11 @@ public class Club {
             inverseJoinColumns = @JoinColumn(name = "news_id")
     )
     private List<News> news;
+
+    @ManyToMany(mappedBy = "favoriteClubs")
+    private List<UserAccount> bookmarkedBy = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "league_id", nullable = false)
+    private League league;
 }
