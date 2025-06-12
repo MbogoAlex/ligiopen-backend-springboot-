@@ -8,14 +8,11 @@ import com.jabulani.ligiopen.dao.league.LeagueDao;
 import com.jabulani.ligiopen.dao.match.MatchDao;
 import com.jabulani.ligiopen.dao.user.UserAccountDao;
 import com.jabulani.ligiopen.model.aws.File;
+import com.jabulani.ligiopen.model.club.entity.*;
 import com.jabulani.ligiopen.model.dto.*;
 import com.jabulani.ligiopen.model.dto.mapper.ClubMapper;
 import com.jabulani.ligiopen.model.dto.mapper.LeagueMapper;
 import com.jabulani.ligiopen.model.dto.mapper.PlayerMapper;
-import com.jabulani.ligiopen.model.club.entity.Club;
-import com.jabulani.ligiopen.model.club.entity.League;
-import com.jabulani.ligiopen.model.club.entity.Player;
-import com.jabulani.ligiopen.model.club.entity.PlayerClub;
 import com.jabulani.ligiopen.model.match.PlayerState;
 import com.jabulani.ligiopen.model.match.entity.MatchLocation;
 import com.jabulani.ligiopen.model.user.entity.UserAccount;
@@ -109,6 +106,7 @@ public class ClubServiceImpl implements ClubService{
                 .clubMainPhoto(null)
                 .league(league)
                 .home(matchLocation)
+                .clubStatus(ClubStatus.PENDING)
                 .build();
 
         File file = File.builder()
@@ -286,8 +284,20 @@ public class ClubServiceImpl implements ClubService{
     public ClubDetailsDto updateClubDetails(UpdateClubDto updateClubDto) {
         Club club = clubDao.getClubById(updateClubDto.getClubId());
 
-        MatchLocation matchLocation = matchDao.getMatchLocationById(updateClubDto.getHomeId());
-        League league = leagueDao.getLeagueById(updateClubDto.getDivisionId());
+        if(updateClubDto.getHomeId() != null) {
+            MatchLocation matchLocation = matchDao.getMatchLocationById(updateClubDto.getHomeId());
+            if(club.getHome() != matchLocation) {
+                club.setHome(matchLocation);
+            }
+        }
+
+        if(updateClubDto.getDivisionId() != null) {
+            League league = leagueDao.getLeagueById(updateClubDto.getDivisionId());
+            if(club.getLeague() != league) {
+                club.setLeague(league);
+            }
+        }
+
 
         if(!Objects.equals(club.getName(), updateClubDto.getName())) {
             club.setName(updateClubDto.getName());
@@ -311,14 +321,6 @@ public class ClubServiceImpl implements ClubService{
 
         if(!Objects.equals(club.getClubAbbreviation(), updateClubDto.getClubAbbreviation())) {
             club.setClubAbbreviation(updateClubDto.getClubAbbreviation());
-        }
-
-        if(club.getHome() != matchLocation) {
-            club.setHome(matchLocation);
-        }
-
-        if(club.getLeague() != league) {
-            club.setLeague(league);
         }
 
         return clubMapper.clubDetailsDto(clubDao.updateClub(club));
@@ -397,9 +399,9 @@ public class ClubServiceImpl implements ClubService{
 
 
     @Override
-    public List<ClubDetailsDto> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId) {
+    public List<ClubDetailsDto> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId, String status) {
         UserAccount userAccount = userAccountDao.getUserAccountById(userId);
-        return clubDao.getClubs(clubName, divisionId, favorite, userId).stream().map(club -> clubMapper.clubDetailsDto2(club, userAccount)).collect(Collectors.toList());
+        return clubDao.getClubs(clubName, divisionId, favorite, userId, status).stream().map(club -> clubMapper.clubDetailsDto2(club, userAccount)).collect(Collectors.toList());
     }
     @Transactional
     @Override
@@ -607,5 +609,24 @@ public class ClubServiceImpl implements ClubService{
     public UserBookmarkedClubsDto getUserFavoriteClubs(Integer userId) {
         UserAccount userAccount = userAccountDao.getUserAccountById(userId);
         return clubMapper.userBookmarkedClubDto(userAccount);
+    }
+
+    @Transactional
+    @Override
+    public ClubDetailsMin updateClubStatus(ClubStatusUpdateDto clubStatusUpdateDto) {
+        Club club = clubDao.getClubById(clubStatusUpdateDto.getClubId());
+        club.setClubStatus(clubStatusUpdateDto.getClubStatus());
+        return clubMapper.clubDetailsMinDto(clubDao.updateClub(club));
+    }
+
+    @Transactional
+    @Override
+    public String makeAllClubsPending() {
+        List<Club> clubs = clubDao.getAllClubs();
+        for(Club club : clubs) {
+            club.setClubStatus(ClubStatus.PENDING);
+            clubDao.updateClub(club);
+        }
+        return "Clubs status changed to pending";
     }
 }

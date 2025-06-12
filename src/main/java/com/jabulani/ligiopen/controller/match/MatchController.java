@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.controller.match;
 
 import com.jabulani.ligiopen.config.response.Response;
+import com.jabulani.ligiopen.model.match.entity.dto.PostMatchAnalysisStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureUpdateDto;
@@ -8,6 +9,7 @@ import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocati
 import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocationUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.MatchCommentaryCreationDto;
 import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.MatchCommentaryUpdateDto;
+import com.jabulani.ligiopen.model.match.entity.dto.postMatchDto.PostMatchAnalysisDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,4 +40,6 @@ public interface MatchController {
     ResponseEntity<Response> getMatchCommentary(Integer commentaryId);
     ResponseEntity<Response> getAllMatchCommentaries();
     ResponseEntity<Response> getPostMatchDetails(Integer postMatchAnalysisId);
+
+    ResponseEntity<Response> updatePostMatchAnalysisStatus(PostMatchAnalysisStatusUpdateDto postMatchAnalysisStatusUpdateDto);
 }

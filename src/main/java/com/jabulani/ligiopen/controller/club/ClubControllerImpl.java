@@ -85,9 +85,10 @@ public class ClubControllerImpl implements ClubController{
             @RequestParam(value = "clubName", required = false) String clubName,
             @RequestParam(value = "divisionId", required = false) Integer divisionId,
             @RequestParam(value = "favorite", required = false) Boolean favorite,
-            @RequestParam(value = "userId") Integer userId
+            @RequestParam(value = "userId", required = false) Integer userId,
+            @RequestParam(value = "status", required = false) String status
     ) {
-        return buildResponse.createResponse("club", clubService.getClubs(clubName, divisionId, favorite, userId), "Clubs fetched", HttpStatus.OK);
+        return buildResponse.createResponse("club", clubService.getClubs(clubName, divisionId, favorite, userId, status), "Clubs fetched", HttpStatus.OK);
     }
 
     @PostMapping("player")
@@ -162,5 +163,17 @@ public class ClubControllerImpl implements ClubController{
     @Override
     public ResponseEntity<Response> getUserFavoriteClubs(@PathVariable("userId") Integer userId) {
         return buildResponse.createResponse("favorite clubs", clubService.getUserFavoriteClubs(userId), "User favorites fetched", HttpStatus.OK);
+    }
+
+    @PutMapping("club/status-update")
+    @Override
+    public ResponseEntity<Response> updateClubStatus(@RequestBody ClubStatusUpdateDto clubStatusUpdateDto) {
+        return buildResponse.createResponse("club", clubService.updateClubStatus(clubStatusUpdateDto), "Club status updated", HttpStatus.OK);
+    }
+
+    @PutMapping("club/all/status-update")
+    @Override
+    public ResponseEntity<Response> makeAllClubsPending() {
+        return buildResponse.createResponse("clubs", clubService.makeAllClubsPending(), "All clubs status changed", HttpStatus.OK);
     }
 }

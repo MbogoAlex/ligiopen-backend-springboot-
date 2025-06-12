@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
 
 public interface ClubController {
     ResponseEntity<Response> addClub(AddClubDto addClubDto, MultipartFile logo) throws IOException;
@@ -19,7 +18,7 @@ public interface ClubController {
 
     ResponseEntity<Response> uploadClubFiles(Integer clubId, MultipartFile[] files) throws IOException;
     ResponseEntity<Response> getClubById(Integer id);
-    ResponseEntity<Response> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId);
+    ResponseEntity<Response> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId, String status);
 
     ResponseEntity<Response> addPlayer(AddPlayerDto addPlayerDto, MultipartFile mainPhoto) throws IOException;
     ResponseEntity<Response> getPlayerById(Integer playerId);
@@ -36,4 +35,6 @@ public interface ClubController {
     ResponseEntity<Response> bookmarkClub(BookmarkClubDto bookmarkClubDto);
 
     ResponseEntity<Response> getUserFavoriteClubs(Integer userId);
+    ResponseEntity<Response> updateClubStatus(ClubStatusUpdateDto clubStatusUpdateDto);
+    ResponseEntity<Response> makeAllClubsPending();
 }

@@ -12,6 +12,7 @@ import com.jabulani.ligiopen.model.match.MatchEventType;
 import com.jabulani.ligiopen.model.match.MatchStatus;
 import com.jabulani.ligiopen.model.match.PlayerState;
 import com.jabulani.ligiopen.model.match.entity.*;
+import com.jabulani.ligiopen.model.match.entity.dto.PostMatchAnalysisStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.events.*;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureDto;
@@ -177,6 +178,7 @@ public class MatchServiceImpl implements MatchService{
                 .matchFixture(matchFixture)
                 .awayClubScore(0)
                 .homeClubScore(0)
+                .postMatchAnalysisStatus(PostMatchAnalysisStatus.PENDING)
                 .build();
 
         matchFixture.setPostMatchAnalysis(postMatchAnalysis);
@@ -488,7 +490,6 @@ public class MatchServiceImpl implements MatchService{
                 .createdAt(LocalDateTime.now())
                 .archived(false)
                 .matchEvent(matchEvent)
-                .matchCommentaryStatus(MatchCommentaryStatus.PENDING)
                 .minute(matchCommentaryCreationDto.getMinute())
                 .build();
 
@@ -562,5 +563,13 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public PostMatchAnalysisDto getPostMatchDetails(Integer postMatchAnalysisId) {
         return postMatchAnalysisDtoMapper.postMatchAnalysisDto(matchDao.getPostMatchAnalysisById(postMatchAnalysisId));
+    }
+
+    @Transactional
+    @Override
+    public PostMatchAnalysisDto updatePostMatchAnalysisStatus(PostMatchAnalysisStatusUpdateDto postMatchAnalysisStatusUpdateDto) {
+        PostMatchAnalysis postMatchAnalysis = matchDao.getPostMatchAnalysisById(postMatchAnalysisStatusUpdateDto.getId());
+        postMatchAnalysis.setPostMatchAnalysisStatus(postMatchAnalysisStatusUpdateDto.getPostMatchAnalysisStatus());
+        return postMatchAnalysisDtoMapper.postMatchAnalysisDto(matchDao.updatePostMatchAnalysis(postMatchAnalysis));
     }
 }

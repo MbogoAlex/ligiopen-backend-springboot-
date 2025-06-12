@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.model.dto;
 
 import com.jabulani.ligiopen.model.aws.dto.FileDto;
+import com.jabulani.ligiopen.model.club.entity.ClubStatus;
 import com.jabulani.ligiopen.model.match.entity.dto.matchLocationDto.MatchLocationDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,4 +35,5 @@ public class ClubDetailsDto {
     private MatchLocationDto home;
     private List<PlayerDto> players;
     private List<FileDto> files;
+    private ClubStatus clubStatus;
 }

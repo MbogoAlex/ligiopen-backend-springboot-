@@ -37,4 +37,7 @@ public class PostMatchAnalysis {
 
     @OneToMany(mappedBy = "postMatchAnalysis", cascade = CascadeType.ALL)
     private List<MatchCommentary> minuteByMinuteCommentary;
+
+    @Enumerated(EnumType.STRING)
+    private PostMatchAnalysisStatus postMatchAnalysisStatus;
 }

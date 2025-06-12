@@ -112,8 +112,8 @@ public class NewsServiceImpl implements NewsService{
 
     @Transactional
     @Override
-    public List<NewsDto> getAllNews(Integer clubId) {
-        return newsDao.getAllNews(clubId).stream().map(newsMapper::newsDto).collect(Collectors.toList());
+    public List<NewsDto> getAllNews(Integer clubId, String status) {
+        return newsDao.getAllNews(clubId, status).stream().map(newsMapper::newsDto).collect(Collectors.toList());
     }
 
     @Override

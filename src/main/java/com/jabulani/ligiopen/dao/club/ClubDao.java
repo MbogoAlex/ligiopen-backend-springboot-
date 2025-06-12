@@ -11,6 +11,7 @@ public interface ClubDao {
     Club getClubById(Integer id);
     Club getClubByName(String name);
     Boolean clubExists(String name);
-    List<Club> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId);
+    List<Club> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId, String status);
     List<Club> getUserFavoriteClubs(Integer userId);
+    List<Club> getAllClubs();
 }

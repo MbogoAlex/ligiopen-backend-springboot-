@@ -2,6 +2,7 @@ package com.jabulani.ligiopen.controller.match;
 
 import com.jabulani.ligiopen.config.response.BuildResponse;
 import com.jabulani.ligiopen.config.response.Response;
+import com.jabulani.ligiopen.model.match.entity.dto.PostMatchAnalysisStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureUpdateDto;
@@ -171,5 +172,11 @@ public class MatchControllerImpl implements MatchController{
     @Override
     public ResponseEntity<Response> getPostMatchDetails(@PathVariable("postMatchAnalysisId") Integer postMatchAnalysisId) {
         return buildResponse.createResponse("match", matchService.getPostMatchDetails(postMatchAnalysisId), "Post match details fetched", HttpStatus.OK);
+    }
+
+    @PutMapping("post-match-analysis/status-update")
+    @Override
+    public ResponseEntity<Response> updatePostMatchAnalysisStatus(@RequestBody PostMatchAnalysisStatusUpdateDto postMatchAnalysisStatusUpdateDto) {
+        return buildResponse.createResponse("match", matchService.updatePostMatchAnalysisStatus(postMatchAnalysisStatusUpdateDto), "Match analysis status updated", HttpStatus.OK);
     }
 }

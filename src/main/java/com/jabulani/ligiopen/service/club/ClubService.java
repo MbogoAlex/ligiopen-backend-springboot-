@@ -19,7 +19,7 @@ public interface ClubService {
     ClubDetailsDto uploadClubFiles(Integer clubId, MultipartFile[] files) throws IOException;
     ClubDetailsDto getClubById(Integer id);
 
-    List<ClubDetailsDto> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId);
+    List<ClubDetailsDto> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId, String status);
 
     PlayerDto addPlayer(AddPlayerDto addPlayerDto, MultipartFile mainPhoto) throws IOException;
 
@@ -37,4 +37,7 @@ public interface ClubService {
     BookmarkSuccessDto bookmarkClub(BookmarkClubDto bookmarkClubDto);
 
     UserBookmarkedClubsDto getUserFavoriteClubs(Integer userId);
+
+    ClubDetailsMin updateClubStatus(ClubStatusUpdateDto clubStatusUpdateDto);
+    String makeAllClubsPending();
 }

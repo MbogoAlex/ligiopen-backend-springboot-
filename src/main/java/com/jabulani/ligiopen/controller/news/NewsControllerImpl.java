@@ -57,8 +57,11 @@ public class NewsControllerImpl implements NewsController{
     }
     @GetMapping("news/all")
     @Override
-    public ResponseEntity<Response> getAllNews(@RequestParam(value = "clubId", required = false) Integer clubId) {
-        return buildResponse.createResponse("news", newsService.getAllNews(clubId), "News fetched", HttpStatus.OK);
+    public ResponseEntity<Response> getAllNews(
+            @RequestParam(value = "clubId", required = false) Integer clubId,
+            @RequestParam(value = "status", required = false) String status
+    ) {
+        return buildResponse.createResponse("news", newsService.getAllNews(clubId, status), "News fetched", HttpStatus.OK);
     }
 
     @DeleteMapping("news/delete/{newsId}")

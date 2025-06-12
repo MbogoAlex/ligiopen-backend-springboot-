@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.dao.club;
 
 import com.jabulani.ligiopen.model.club.entity.Club;
+import com.jabulani.ligiopen.model.club.entity.ClubStatus;
 import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -62,7 +63,7 @@ public class ClubDaoImpl implements ClubDao{
 
 
     @Override
-    public List<Club> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId) {
+    public List<Club> getClubs(String clubName, Integer divisionId, Boolean favorite, Integer userId, String status) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Club> cq = cb.createQuery(Club.class);
         Root<Club> club = cq.from(Club.class);
@@ -85,6 +86,17 @@ public class ClubDaoImpl implements ClubDao{
             predicates.add(cb.equal(userJoin.get("id"), userId));
         }
 
+        // Filter by club status
+        if (status != null && !status.isEmpty()) {
+            try {
+                ClubStatus clubStatusEnum = ClubStatus.valueOf(status.toUpperCase());
+                predicates.add(cb.equal(club.get("clubStatus"), clubStatusEnum));
+            } catch (IllegalArgumentException e) {
+                // Optional: log or handle invalid status string
+                // For now, ignore the filter if the status is invalid
+            }
+        }
+
         // Apply all predicates
         if (!predicates.isEmpty()) {
             cq.where(predicates.toArray(new Predicate[0]));
@@ -96,6 +108,7 @@ public class ClubDaoImpl implements ClubDao{
         return entityManager.createQuery(cq).getResultList();
     }
 
+
     @Override
     public List<Club> getUserFavoriteClubs(Integer userId) {
         TypedQuery<Club> query = entityManager.createQuery(
@@ -103,6 +116,12 @@ public class ClubDaoImpl implements ClubDao{
                 Club.class
         );
         query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Club> getAllClubs() {
+        TypedQuery<Club> query = entityManager.createQuery("from Club", Club.class);
         return query.getResultList();
     }
 

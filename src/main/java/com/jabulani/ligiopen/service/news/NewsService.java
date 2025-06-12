@@ -12,7 +12,7 @@ public interface NewsService {
     NewsDto updateNewsCoverPhoto(Integer newsId, MultipartFile file) throws IOException;
 
     NewsDto getNews(Integer newsId);
-    List<NewsDto> getAllNews(Integer clubId);
+    List<NewsDto> getAllNews(Integer clubId, String status);
     String deleteNews(Integer newsId);
     String deleteNewsCoverPhoto(Integer fileId);
 

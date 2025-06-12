@@ -3,12 +3,14 @@ package com.jabulani.ligiopen.dao.news;
 import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.news.News;
 import com.jabulani.ligiopen.model.news.NewsItem;
+import com.jabulani.ligiopen.model.news.NewsStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -44,21 +46,33 @@ public class NewsDaoImpl implements NewsDao{
     }
 
     @Override
-    public List<News> getAllNews(Integer clubId) {
+    public List<News> getAllNews(Integer clubId, String status) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<News> cq = cb.createQuery(News.class);
         Root<News> newsRoot = cq.from(News.class);
+        cq.select(newsRoot).distinct(true);
+
+        List<Predicate> predicates = new ArrayList<>();
 
         if (clubId != null) {
-            // Join with Club entity through the many-to-many relationship
             Join<News, Club> clubJoin = newsRoot.join("clubs", JoinType.INNER);
-            cq.where(cb.equal(clubJoin.get("id"), clubId));
+            predicates.add(cb.equal(clubJoin.get("id"), clubId));
         }
 
-        cq.select(newsRoot).distinct(true); // Add distinct to avoid duplicates
+        if (status != null && !status.isBlank()) {
+            try {
+                NewsStatus newsStatusEnum = NewsStatus.valueOf(status.toUpperCase());
+                predicates.add(cb.equal(newsRoot.get("newsStatus"), newsStatusEnum));
+            } catch (IllegalArgumentException e) {
+                // Optional: log invalid status or ignore silently
+            }
+        }
+
+        cq.where(predicates.toArray(new Predicate[0]));
         TypedQuery<News> query = entityManager.createQuery(cq);
         return query.getResultList();
     }
+
 
     @Override
     public NewsItem createNewsItem(NewsItem newsItem) {

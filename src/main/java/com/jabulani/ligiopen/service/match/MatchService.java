@@ -1,5 +1,6 @@
 package com.jabulani.ligiopen.service.match;
 
+import com.jabulani.ligiopen.model.match.entity.dto.PostMatchAnalysisStatusUpdateDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureCreationDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureDto;
 import com.jabulani.ligiopen.model.match.entity.dto.fixtureDto.MatchFixtureStatusUpdateDto;
@@ -45,4 +46,6 @@ public interface MatchService {
     List<MatchCommentaryDto> getAllMatchCommentaries();
 
     PostMatchAnalysisDto getPostMatchDetails(Integer postMatchAnalysisId);
+
+    PostMatchAnalysisDto updatePostMatchAnalysisStatus(PostMatchAnalysisStatusUpdateDto postMatchAnalysisStatusUpdateDto);
 }

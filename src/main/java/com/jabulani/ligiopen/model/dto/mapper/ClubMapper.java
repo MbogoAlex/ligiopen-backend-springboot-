@@ -81,6 +81,7 @@ public class ClubMapper {
                 .archivedAt(club.getArchivedAt())
                 .players(players)
                 .files(files)
+                .clubStatus(club.getClubStatus())
                 .build();
     }
 
@@ -137,6 +138,7 @@ public class ClubMapper {
                 .archivedAt(club.getArchivedAt())
                 .players(players)
                 .files(files)
+                .clubStatus(club.getClubStatus())
                 .build();
     }
 
@@ -176,6 +178,7 @@ public class ClubMapper {
                 .leagueName(club.getLeague().getName())
                 .clubLogo(clubLogo)
                 .clubPhotos(files)
+                .clubStatus(club.getClubStatus())
                 .build();
     }
 

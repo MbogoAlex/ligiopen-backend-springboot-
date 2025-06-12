@@ -93,4 +93,7 @@ public class Club {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "league_id", nullable = false)
     private League league;
+
+    @Enumerated(EnumType.STRING)
+    private ClubStatus clubStatus;
 }
