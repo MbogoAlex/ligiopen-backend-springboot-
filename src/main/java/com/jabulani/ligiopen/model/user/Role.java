@@ -6,5 +6,6 @@ public enum Role {
     MANAGER,
     COACH,
     PLAYER,
-    USER
+    USER,
+    CONTENT_ADMIN
 }

@@ -1,12 +1,11 @@
 package com.jabulani.ligiopen.service.user;
 
+import com.jabulani.ligiopen.dao.club.ClubDao;
 import com.jabulani.ligiopen.dao.user.UserAccountDao;
+import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.user.Role;
+import com.jabulani.ligiopen.model.user.dto.*;
 import com.jabulani.ligiopen.model.user.entity.UserAccount;
-import com.jabulani.ligiopen.model.user.dto.PasswordChangeDto;
-import com.jabulani.ligiopen.model.user.dto.RegisterUserDto;
-import com.jabulani.ligiopen.model.user.dto.UpdateUserDto;
-import com.jabulani.ligiopen.model.user.dto.UserAccountDto;
 import com.jabulani.ligiopen.model.user.dto.mapper.UserAccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +20,16 @@ import java.util.stream.Collectors;
 public class UserAccountServiceImpl implements UserAccountService{
     private final UserAccountMapper userAccountMapper = new UserAccountMapper();
     private final UserAccountDao userAccountDao;
+    private final ClubDao clubDao;
     private final PasswordEncoder passwordEncoder;
     @Autowired
     public UserAccountServiceImpl(
             UserAccountDao userAccountDao,
+            ClubDao clubDao,
             PasswordEncoder passwordEncoder
     ) {
         this.userAccountDao = userAccountDao;
+        this.clubDao = clubDao;
         this.passwordEncoder = passwordEncoder;
     }
     @Transactional
@@ -82,5 +84,33 @@ public class UserAccountServiceImpl implements UserAccountService{
     @Override
     public List<UserAccountDto> getAllUsers() {
         return userAccountDao.getAllUsers().stream().map(userAccountMapper::toUserDto).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public UserAccountDto setSuperAdmin(SetSuperAdminDto setSuperAdminDto) {
+        UserAccount userAccount =  userAccountDao.getUserAccountById(setSuperAdminDto.getUserId());
+        userAccount.setRole(Role.SUPER_ADMIN);
+        return userAccountMapper.toUserDto(userAccountDao.updateUserAccount(userAccount));
+    }
+
+    @Transactional
+    @Override
+    public UserAccountDto setContentAdmin(SetContentAdminDto setContentAdminDto) {
+        UserAccount userAccount =  userAccountDao.getUserAccountById(setContentAdminDto.getUserId());
+        userAccount.setRole(Role.CONTENT_ADMIN);
+        return userAccountMapper.toUserDto(userAccountDao.updateUserAccount(userAccount));
+    }
+
+    @Transactional
+    @Override
+    public UserAccountDto setTeamAdmin(SetTeamAdminDto setTeamAdminDto) {
+        UserAccount userAccount =  userAccountDao.getUserAccountById(setTeamAdminDto.getUserId());
+        Club club = clubDao.getClubById(setTeamAdminDto.getTeamId());
+        userAccount.setRole(Role.TEAM_ADMIN);
+        userAccount.setManagedClub(null);
+        userAccount.setManagedClub(club);
+
+        return userAccountMapper.toUserDto(userAccountDao.updateUserAccount(userAccount));
     }
 }

@@ -1,9 +1,6 @@
 package com.jabulani.ligiopen.service.user;
 
-import com.jabulani.ligiopen.model.user.dto.PasswordChangeDto;
-import com.jabulani.ligiopen.model.user.dto.RegisterUserDto;
-import com.jabulani.ligiopen.model.user.dto.UpdateUserDto;
-import com.jabulani.ligiopen.model.user.dto.UserAccountDto;
+import com.jabulani.ligiopen.model.user.dto.*;
 
 import java.util.List;
 
@@ -15,4 +12,8 @@ public interface UserAccountService {
     UserAccountDto getUserAccountByEmail(String email);
     Boolean existsByEmail(String email);
     List<UserAccountDto> getAllUsers();
+
+    UserAccountDto setSuperAdmin(SetSuperAdminDto setSuperAdminDto);
+    UserAccountDto setContentAdmin(SetContentAdminDto setContentAdminDto);
+    UserAccountDto setTeamAdmin(SetTeamAdminDto setTeamAdminDto);
 }
