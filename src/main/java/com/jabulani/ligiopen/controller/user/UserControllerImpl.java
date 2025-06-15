@@ -9,10 +9,7 @@ import com.jabulani.ligiopen.service.user.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/")
@@ -43,5 +40,20 @@ public class UserControllerImpl implements UserController{
     @Override
     public ResponseEntity<Response> setTeamAdmin(@RequestBody SetTeamAdminDto setTeamAdminDto) {
         return buildResponse.createResponse("role", userAccountService.setTeamAdmin(setTeamAdminDto), "Team admin set", HttpStatus.CREATED);
+    }
+
+    @GetMapping("user")
+    @Override
+    public ResponseEntity<Response> getUsers(
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "role", required = false) String role
+    ) {
+        return buildResponse.createResponse("users", userAccountService.getUsers(username, role), "Users fetched", HttpStatus.OK);
+    }
+
+    @GetMapping("user/{userId}")
+    @Override
+    public ResponseEntity<Response> getUser(@PathVariable("userId") Integer userId) {
+        return buildResponse.createResponse("user", userAccountService.getUser(userId), "User fetched", HttpStatus.OK);
     }
 }

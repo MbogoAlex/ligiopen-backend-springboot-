@@ -6,19 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserAccountDto {
-    private Integer id;
+public class UserMinDto {
     private String username;
     private String email;
+    private String password;
     private Role role;
-    private LocalDateTime createdAt;
-    private Boolean archived;
-    private LocalDateTime archivedAt;
-    private Integer administeringClubId;
 }

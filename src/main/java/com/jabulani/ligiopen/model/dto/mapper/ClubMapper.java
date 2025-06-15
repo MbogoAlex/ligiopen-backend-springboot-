@@ -5,6 +5,8 @@ import com.jabulani.ligiopen.model.aws.dto.mapper.FileMapper;
 import com.jabulani.ligiopen.model.club.entity.Club;
 import com.jabulani.ligiopen.model.club.entity.PlayerClub;
 import com.jabulani.ligiopen.model.dto.*;
+import com.jabulani.ligiopen.model.user.dto.UserAccountDto;
+import com.jabulani.ligiopen.model.user.dto.mapper.UserAccountMapper;
 import com.jabulani.ligiopen.model.user.entity.UserAccount;
 import com.jabulani.ligiopen.service.aws.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,21 @@ import java.util.stream.Collectors;
 public class ClubMapper {
     private final String BUCKET_NAME = "ligiopen";
     private final PlayerMapper playerMapper;
+    private final UserAccountMapper userAccountMapper;
     private final FileMapper fileMapper;
     private final AwsService awsService;
     private final LeagueMapper leagueMapper;
+
     @Autowired
     public ClubMapper(
             PlayerMapper playerMapper,
+            UserAccountMapper userAccountMapper,
             AwsService awsService,
             FileMapper fileMapper,
             LeagueMapper leagueMapper
     ) {
         this.playerMapper = playerMapper;
+        this.userAccountMapper = userAccountMapper;
         this.awsService = awsService;
         this.fileMapper = fileMapper;
         this.leagueMapper = leagueMapper;
@@ -39,6 +45,14 @@ public class ClubMapper {
         FileDto clubMainPhoto = null;
 
         FileDto clubLogo = null;
+
+        List<UserAccountDto> admins = new ArrayList<>();
+
+        if(!club.getManagers().isEmpty()) {
+            for(UserAccount userAccount : club.getManagers()) {
+                admins.add(userAccountMapper.toUserDto(userAccount));
+            }
+        }
 
         if(club.getClubMainPhoto() != null) {
             clubMainPhoto = fileMapper.fileDto(club.getClubMainPhoto());
@@ -82,6 +96,7 @@ public class ClubMapper {
                 .players(players)
                 .files(files)
                 .clubStatus(club.getClubStatus())
+                .admins(admins)
                 .build();
     }
 
@@ -158,6 +173,14 @@ public class ClubMapper {
 
         FileDto clubLogo = null;
 
+        List<UserAccountDto> admins = new ArrayList<>();
+
+        if(!club.getManagers().isEmpty()) {
+            for(UserAccount userAccount : club.getManagers()) {
+                admins.add(userAccountMapper.toUserDto(userAccount));
+            }
+        }
+
         if(club.getClubMainPhoto() != null) {
             clubMainPhoto = fileMapper.fileDto(club.getClubMainPhoto());
         }
@@ -179,6 +202,7 @@ public class ClubMapper {
                 .clubLogo(clubLogo)
                 .clubPhotos(files)
                 .clubStatus(club.getClubStatus())
+                .admin(admins)
                 .build();
     }
 

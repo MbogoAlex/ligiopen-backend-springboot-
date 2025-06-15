@@ -58,35 +58,4 @@ public class UserAccount {
             inverseJoinColumns = @JoinColumn(name = "club_id")
     )
     private List<Club> favoriteClubs = new ArrayList<>();
-
-//    // Validation to ensure only one club relationship is set based on role
-//    @PrePersist
-//    @PreUpdate
-//    private void validateClubRelationships() {
-//        if (role == null) {
-//            return;
-//        }
-//
-//        switch (role) {
-//            case TEAM_ADMIN:
-//                if (managedClub != null || coachedClub != null) {
-//                    throw new IllegalStateException("TEAM_ADMIN can only have administeredClub");
-//                }
-//                break;
-//            case MANAGER:
-//                if (administeredClub != null || coachedClub != null) {
-//                    throw new IllegalStateException("MANAGER can only have managedClub");
-//                }
-//                break;
-//            case COACH:
-//                if (administeredClub != null || managedClub != null) {
-//                    throw new IllegalStateException("COACH can only have coachedClub");
-//                }
-//                break;
-//            default:
-//                if (administeredClub != null || managedClub != null || coachedClub != null) {
-//                    throw new IllegalStateException("Only TEAM_ADMIN, MANAGER, or COACH can have club relationships");
-//                }
-//        }
-//    }
 }

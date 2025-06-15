@@ -86,6 +86,16 @@ public class UserAccountServiceImpl implements UserAccountService{
         return userAccountDao.getAllUsers().stream().map(userAccountMapper::toUserDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<UserAccountDto> getUsers(String username, String role) {
+        return userAccountDao.getUsers(username, role).stream().map(userAccountMapper::toUserDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserAccountDto getUser(Integer userId) {
+        return userAccountMapper.toUserDto(userAccountDao.getUser(userId));
+    }
+
     @Transactional
     @Override
     public UserAccountDto setSuperAdmin(SetSuperAdminDto setSuperAdminDto) {

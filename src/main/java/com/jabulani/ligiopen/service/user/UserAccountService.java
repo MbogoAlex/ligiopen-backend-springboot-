@@ -12,6 +12,8 @@ public interface UserAccountService {
     UserAccountDto getUserAccountByEmail(String email);
     Boolean existsByEmail(String email);
     List<UserAccountDto> getAllUsers();
+    List<UserAccountDto> getUsers(String username, String role);
+    UserAccountDto getUser(Integer userId);
 
     UserAccountDto setSuperAdmin(SetSuperAdminDto setSuperAdminDto);
     UserAccountDto setContentAdmin(SetContentAdminDto setContentAdminDto);
