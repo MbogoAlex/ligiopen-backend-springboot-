@@ -14,7 +14,7 @@ public interface MatchDao {
     MatchLocation updateMatchLocation(MatchLocation matchLocation);
     MatchLocation getMatchLocationById(Integer id);
     MatchLocation getMatchLocationByName(String name);
-    List<MatchLocation> getMatchLocations();
+    List<MatchLocation> getMatchLocations(String venueName, String locationName);
     MatchFixture createMatchFixture(MatchFixture matchFixture);
     MatchFixture updateMatchFixture(MatchFixture matchFixture);
     MatchFixture getMatchFixtureById(Integer id);

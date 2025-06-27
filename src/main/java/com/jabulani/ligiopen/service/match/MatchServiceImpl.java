@@ -154,8 +154,8 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public List<MatchLocationDto> getAllMatchLocations() {
-        return matchDao.getMatchLocations().stream().map(matchLocationDtoMapper::matchLocationDto).collect(Collectors.toList());
+    public List<MatchLocationDto> getAllMatchLocations(String venueName, String locationName) {
+        return matchDao.getMatchLocations(venueName, locationName).stream().map(matchLocationDtoMapper::matchLocationDto).collect(Collectors.toList());
     }
     @Transactional
     @Override

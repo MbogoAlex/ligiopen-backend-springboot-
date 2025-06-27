@@ -1,6 +1,7 @@
 package com.jabulani.ligiopen.service.club;
 
 import com.google.gson.Gson;
+import com.jabulani.ligiopen.config.Constants;
 import com.jabulani.ligiopen.config.DiskMultipartFile;
 import com.jabulani.ligiopen.dao.club.ClubDao;
 import com.jabulani.ligiopen.dao.club.PlayerDao;
@@ -46,7 +47,6 @@ import java.util.stream.Collectors;
 @Service
 public class ClubServiceImpl implements ClubService{
 
-    private final String BUCKET_NAME = "ligiopen";
     private final ClubDao clubDao;
     private final LeagueDao leagueDao;
     private final MatchDao matchDao;
@@ -84,7 +84,7 @@ public class ClubServiceImpl implements ClubService{
         String fileName = null;
 
         if(logo != null) {
-            fileName = awsService.uploadFile(BUCKET_NAME, logo);
+            fileName = awsService.uploadFile(Constants.BUCKET_NAME, logo);
         }
 
         League league = leagueDao.getLeagueById(addClubDto.getDivisionId());
@@ -207,8 +207,8 @@ public class ClubServiceImpl implements ClubService{
                                     : "application/octet-stream");
 
 // now upload
-                    String awsFileName = awsService.uploadFile(BUCKET_NAME, multipart);
-                    String awsFileUrl  = awsService.getFileUrl(BUCKET_NAME, awsFileName);
+                    String awsFileName = awsService.uploadFile(Constants.BUCKET_NAME, multipart);
+                    String awsFileUrl  = awsService.getFileUrl(Constants.BUCKET_NAME, awsFileName);
 
 // build your JPA File entity
                     clubLogoFile = File.builder()
@@ -335,10 +335,10 @@ public class ClubServiceImpl implements ClubService{
         if(logo != null) {
 
             if(club.getClubLogo() != null) {
-                awsService.deleteFile(BUCKET_NAME, clubLogo.getName());
+                awsService.deleteFile(Constants.BUCKET_NAME, clubLogo.getName());
             }
 
-            clubLogo.setName(awsService.uploadFile(BUCKET_NAME, logo));
+            clubLogo.setName(awsService.uploadFile(Constants.BUCKET_NAME, logo));
         }
 
         return clubMapper.clubDetailsDto(clubDao.updateClub(club));
@@ -350,7 +350,7 @@ public class ClubServiceImpl implements ClubService{
         String fileName = null;
 
         if(photo != null) {
-            fileName = awsService.uploadFile(BUCKET_NAME, photo);
+            fileName = awsService.uploadFile(Constants.BUCKET_NAME, photo);
         }
 
 
@@ -367,7 +367,7 @@ public class ClubServiceImpl implements ClubService{
 
             File file = club.getClubMainPhoto();
 
-            awsService.deleteFile(BUCKET_NAME, file.getName());
+            awsService.deleteFile(Constants.BUCKET_NAME, file.getName());
 
             file.setName(fileName);
         }
@@ -384,7 +384,7 @@ public class ClubServiceImpl implements ClubService{
         for (MultipartFile file : files) {
             File clubFile = File.builder()
                     .club(club)
-                    .name(awsService.uploadFile(BUCKET_NAME, file))
+                    .name(awsService.uploadFile(Constants.BUCKET_NAME, file))
                     .build();
             club.getFiles().add(clubFile);
         }
@@ -411,7 +411,7 @@ public class ClubServiceImpl implements ClubService{
         String mainPic = null;
 
         if(mainPhoto != null) {
-            mainPic = awsService.uploadFile(BUCKET_NAME, mainPhoto);
+            mainPic = awsService.uploadFile(Constants.BUCKET_NAME, mainPhoto);
         }
 
         File file = File.builder()
@@ -557,7 +557,7 @@ public class ClubServiceImpl implements ClubService{
         File mainPic = player.getMainPhoto();
 
         if(mainPhoto != null) {
-            mainPic.setName(awsService.uploadFile(BUCKET_NAME, mainPhoto));
+            mainPic.setName(awsService.uploadFile(Constants.BUCKET_NAME, mainPhoto));
         }
 
         return playerMapper.playerDto(playerDao.updatePlayer(player));
@@ -570,7 +570,7 @@ public class ClubServiceImpl implements ClubService{
         for (MultipartFile file : files) {
             File clubFile = File.builder()
                     .player(player)
-                    .name(awsService.uploadFile(BUCKET_NAME, file))
+                    .name(awsService.uploadFile(Constants.BUCKET_NAME, file))
                     .build();
             player.getFiles().add(clubFile);
         }

@@ -26,7 +26,7 @@ public interface MatchService {
     MatchLocationDto removeMatchLocationFile(Integer locationId, Integer fileId);
     MatchLocationDto getMatchLocationById(Integer locationId);
     MatchLocationDto getMatchLocationByName(String name);
-    List<MatchLocationDto> getAllMatchLocations();
+    List<MatchLocationDto> getAllMatchLocations(String venueName, String locationName);
     MatchFixtureDto createMatchFixture(MatchFixtureCreationDto matchFixtureCreationDto);
     MatchFixtureDto updateMatchFixture(MatchFixtureUpdateDto matchFixtureUpdateDto);
     MatchFixtureDto updateMatchFixtureStatus(MatchFixtureStatusUpdateDto matchFixtureStatusUpdateDto);

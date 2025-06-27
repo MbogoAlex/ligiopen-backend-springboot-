@@ -24,7 +24,7 @@ public interface MatchController {
     ResponseEntity<Response> uploadMatchLocationFiles(Integer locationId, MultipartFile[] files) throws IOException;
     ResponseEntity<Response> removeMatchLocationFile(Integer locationId, Integer fileId);
     ResponseEntity<Response> getMatchLocationById(Integer locationId);
-    ResponseEntity<Response> getAllMatchLocations();
+    ResponseEntity<Response> getAllMatchLocations(String venueName, String locationName);
     ResponseEntity<Response> createMatchFixture(MatchFixtureCreationDto matchFixtureCreationDto);
     ResponseEntity<Response> updateMatchFixture(MatchFixtureUpdateDto matchFixtureUpdateDto);
     ResponseEntity<Response> updateMatchFixtureStatus(MatchFixtureStatusUpdateDto matchFixtureStatusUpdateDto);

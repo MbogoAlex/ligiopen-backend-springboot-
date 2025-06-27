@@ -75,7 +75,7 @@ public class AwsServiceImplementation implements AwsService {
     @Override
     public String getFileUrl(String bucketName, String keyName) {
         // Construct the public URL for the file
-        String fileUrl = "https://" + bucketName + ".s3.amazonaws.com/" + keyName;
+        String fileUrl = "https://" + bucketName + ".fra1.digitaloceanspaces.com/" + keyName;
 
         log.info("Public URL for file in bucket({}): {}", bucketName, keyName);
 

@@ -110,6 +110,14 @@ public class ClubMapper {
             clubMainPhoto = fileMapper.fileDto(club.getClubMainPhoto());
         }
 
+        List<UserAccountDto> admins = new ArrayList<>();
+
+        if(!club.getManagers().isEmpty()) {
+            for(UserAccount userAcc : club.getManagers()) {
+                admins.add(userAccountMapper.toUserDto(userAcc));
+            }
+        }
+
         if(club.getClubLogo() != null) {
             clubLogo = fileMapper.fileDto(club.getClubLogo());
         }
@@ -154,6 +162,7 @@ public class ClubMapper {
                 .players(players)
                 .files(files)
                 .clubStatus(club.getClubStatus())
+                .admins(admins)
                 .build();
     }
 

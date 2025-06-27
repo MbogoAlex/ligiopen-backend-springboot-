@@ -56,10 +56,43 @@ public class MatchDaoImpl implements MatchDao{
     }
 
     @Override
-    public List<MatchLocation> getMatchLocations() {
-        TypedQuery<MatchLocation> query = entityManager.createQuery("from MatchLocation", MatchLocation.class);
-        return query.getResultList();
+    public List<MatchLocation> getMatchLocations(String venueName, String locationName) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<MatchLocation> cq = cb.createQuery(MatchLocation.class);
+        Root<MatchLocation> root = cq.from(MatchLocation.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        // Case-insensitive LIKE on venueName
+        if (venueName != null && !venueName.isBlank()) {
+            predicates.add(
+                    cb.like(
+                            cb.lower(root.get("venueName")),
+                            "%" + venueName.toLowerCase() + "%"
+                    )
+            );
+        }
+
+        // Case-insensitive LIKE across country, county, or town
+        if (locationName != null && !locationName.isBlank()) {
+            String pattern = "%" + locationName.toLowerCase() + "%";
+            predicates.add(
+                    cb.or(
+                            cb.like(cb.lower(root.get("country")), pattern),
+                            cb.like(cb.lower(root.get("county")),  pattern),
+                            cb.like(cb.lower(root.get("town")),    pattern)
+                    )
+            );
+        }
+
+        if (!predicates.isEmpty()) {
+            cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        }
+
+        return entityManager.createQuery(cq).getResultList();
     }
+
+
 
     @Override
     public MatchFixture createMatchFixture(MatchFixture matchFixture) {

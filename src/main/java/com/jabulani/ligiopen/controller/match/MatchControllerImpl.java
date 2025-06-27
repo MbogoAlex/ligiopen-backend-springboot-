@@ -81,8 +81,11 @@ public class MatchControllerImpl implements MatchController{
     }
     @GetMapping("match-location/all")
     @Override
-    public ResponseEntity<Response> getAllMatchLocations() {
-        return buildResponse.createResponse("match", matchService.getAllMatchLocations(), "Match locations fetched", HttpStatus.OK);
+    public ResponseEntity<Response> getAllMatchLocations(
+            @RequestParam(name = "venueName", required = false) String venueName,
+            @RequestParam(name = "locationName", required = false) String locationName
+    ) {
+        return buildResponse.createResponse("match", matchService.getAllMatchLocations(venueName, locationName), "Match locations fetched", HttpStatus.OK);
     }
     @PostMapping("match-fixture")
     @Override
