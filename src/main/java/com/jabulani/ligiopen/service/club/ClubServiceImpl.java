@@ -106,6 +106,7 @@ public class ClubServiceImpl implements ClubService{
                 .clubMainPhoto(null)
                 .league(league)
                 .home(matchLocation)
+                .managers(new ArrayList<>())
                 .clubStatus(ClubStatus.PENDING)
                 .build();
 
